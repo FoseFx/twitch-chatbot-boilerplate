@@ -18,7 +18,7 @@ export async function startServer(options: StartServerOptions): Promise<void> {
 
   app.set('view engine', 'ejs');
 
-  setUpRoutes(app);
+  setUpRoutes(app, options);
 
   app.listen(options.port, () =>
     console.log(`HTTP-Server listening on port ${options.port}`),

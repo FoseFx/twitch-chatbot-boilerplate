@@ -1,13 +1,24 @@
 import { Request, Response, Express, NextFunction } from 'express';
+import { StartServerOptions } from './server.types';
 
-export function setUpRoutes(app: Express): void {
+export function setUpRoutes(
+  app: Express,
+  startOptions: StartServerOptions,
+): void {
   app.get('/', home);
+  app.get('/add', add(startOptions.botname));
   app.get('*', notfound);
   app.use(errorpage);
 }
 
 export function home(_req: Request, res: Response): void {
-  res.render('index');
+  res.redirect('/add');
+}
+
+export function add(botname: string) {
+  return function add(_req: Request, res: Response): void {
+    res.render('add', { botname });
+  };
 }
 
 export function notfound(_req: Request, res: Response): void {

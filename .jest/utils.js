@@ -3,6 +3,7 @@ function sampleEnv(p) {
   p.env.PORT = 8080;
   p.env.TWITCH_CLIENT_ID = 'xxxxxxxxxxxx';
   p.env.TWITCH_CLIENT_SECRET = 'xxxxxxxxxxx';
+  p.env.BOTNAME = 'nice-bot';
 }
 
 module.exports = { sampleEnv };
