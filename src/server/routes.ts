@@ -12,10 +12,8 @@ export function home(_req: Request, res: Response): void {
 
 export function notfound(_req: Request, res: Response): void {
   res.status(404).render('error', {
-    data: {
-      heading: '404 - Not Found',
-      message: 'The path you provided is invalid',
-    },
+    heading: '404 - Not Found',
+    message: 'The path you provided is invalid',
   });
 }
 
@@ -28,7 +26,8 @@ export function errorpage(
 ): void {
   res.status(500);
   res.render('error', {
-    data: { heading: '500 - Internal Server Error', message: error.message },
+    heading: '500 - Internal Server Error',
+    message: error.message,
   });
   throw error;
 }
