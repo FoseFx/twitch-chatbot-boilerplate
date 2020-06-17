@@ -7,7 +7,6 @@ export function setUpRoutes(app: Express): void {
 }
 
 export function home(_req: Request, res: Response): void {
-  throw new Error('ksjidasd');
   res.render('index');
 }
 
