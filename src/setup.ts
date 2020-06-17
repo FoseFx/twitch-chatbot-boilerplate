@@ -5,6 +5,7 @@ import {
   StartServerOptions,
   TokenResponse,
 } from './server/server.types';
+import { startBot } from './bot/bot';
 
 const AUTH_PATH = './.config/auth.json';
 
@@ -56,7 +57,7 @@ export async function setup(
 export async function finishSetup(token: TokenResponse): Promise<void> {
   writeToDisk(token);
   _isSetupYet = true;
-  // TODO start the bot if it is not running yet
+  startBot(token);
 }
 
 export function writeToDisk(token: TokenResponse): void {

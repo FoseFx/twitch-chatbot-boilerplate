@@ -2,6 +2,7 @@ import { loadEnvVariables } from './env';
 import { startServer } from './server/server';
 import { setup } from './setup';
 import { StartServerOptions } from './server/server.types';
+import { startBot } from './bot/bot';
 
 loadEnvVariables(); // make sure all variables are available
 
@@ -16,4 +17,4 @@ const opts: StartServerOptions = {
 
 startServer(opts)
   .then(() => setup(opts))
-  .then(/* TODO: start bot, dont if authdata null */);
+  .then((authData) => startBot(authData));
