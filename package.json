@@ -23,7 +23,8 @@
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "start": "node build/src/main.js"
   },
   "author": "Max Baumann <max@fosefx.com>",
   "license": "Unlicense",

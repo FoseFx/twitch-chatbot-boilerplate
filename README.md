@@ -17,7 +17,12 @@ Uses:
 
 ### How does it work?
 
-TODO
+1. First things first, got to [dev.twitch.tv][devtwitchtv] and [create an App][createtwitchapp].
+2. Create a new Twitch Account for your bot. (It is possible to create multiple twitch accounts with the same email address, when you enable it)
+3. Clone or download this repository
+4. Install dependencies `npm install`
+5. Build and start the bot `npm run build` and `npm run start`
+6. Follow further instructions
 
 ## Available Scripts
 
@@ -41,3 +46,5 @@ Licensed under the Unlicense. See the [LICENSE](https://github.com/fosefx/twitch
 [prettier]: https://prettier.io
 [travis]: https://travis-ci.org
 [editorconfig]: https://editorconfig.org/
+[devtwitchtv]: https://dev.twitch.tv/
+[createtwitchapp]: https://dev.twitch.tv/docs/authentication/#registration
