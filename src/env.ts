@@ -3,11 +3,18 @@ import * as dotenv from 'dotenv';
 export function loadEnvVariables(): void {
   dotenv.config();
 
-  const necessaryKeys = ['HOST', 'PORT'];
+  const necessaryKeys = [
+    'HOST',
+    'PORT',
+    'TWITCH_CLIENT_ID',
+    'TWITCH_CLIENT_SECRET',
+  ];
   const missingKeys = [];
 
   for (const key of necessaryKeys) {
-    if (!(key in process.env)) {
+    const varSet = key in process.env;
+
+    if (!varSet) {
       missingKeys.push(key);
     }
   }
@@ -15,7 +22,7 @@ export function loadEnvVariables(): void {
   if (missingKeys.length !== 0) {
     throw new Error(
       'Not all necessary environment variables were set. Missing: ' +
-        necessaryKeys.reduce((prev, current) => prev + ', ' + current),
+        missingKeys.reduce((prev, current) => prev + ', ' + current),
     );
   }
 }
