@@ -14,15 +14,17 @@ Uses:
 - [Jest][jest]
 - [Prettier][prettier]
 - [.editorconfig][editorconfig]
+- [dotenv][dotenv]
 
 ### How does it work?
 
-1. First things first, got to [dev.twitch.tv][devtwitchtv] and [create an App][createtwitchapp].
-2. Create a new Twitch Account for your bot. (It is possible to create multiple twitch accounts with the same email address, when you enable it)
-3. Clone or download this repository
-4. Install dependencies `npm install`
-5. Build and start the bot `npm run build` and `npm run start`
-6. Follow further instructions
+- Go to [dev.twitch.tv][devtwitchtv] and [create an App][createtwitchapp].
+- Create a new Twitch Account for your bot. (It is possible to create multiple twitch accounts with the same email address, when you enable it)
+- Clone or download this repository
+- Install dependencies `npm install`
+- Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
+- Build and start the bot `npm run build` and `npm run start`
+- Follow further instructions
 
 ## Available Scripts
 
@@ -48,3 +50,4 @@ Licensed under the Unlicense. See the [LICENSE](https://github.com/fosefx/twitch
 [editorconfig]: https://editorconfig.org/
 [devtwitchtv]: https://dev.twitch.tv/
 [createtwitchapp]: https://dev.twitch.tv/docs/authentication/#registration
+[dotenv]: https://www.npmjs.com/package/dotenv

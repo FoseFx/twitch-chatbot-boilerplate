@@ -1,1 +1,3 @@
-// TODO
+import { loadEnvVariables } from './env';
+
+loadEnvVariables();

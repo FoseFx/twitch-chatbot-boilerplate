@@ -29,6 +29,7 @@
   "author": "Max Baumann <max@fosefx.com>",
   "license": "Unlicense",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "tmi.js": "^1.5.0",
     "tslib": "~2.0.0"
   }
