@@ -27,7 +27,7 @@ export function getOTP(): string {
 export async function setup(
   opts: StartServerOptions,
 ): Promise<AuthData | null> {
-  const dataFromDisk = readFromDisk();
+  const dataFromDisk = _this.readFromDisk();
 
   if (dataFromDisk !== null) {
     // already set up
@@ -55,7 +55,7 @@ export async function setup(
 }
 
 export async function finishSetup(token: TokenResponse): Promise<void> {
-  writeToDisk(token);
+  _this.writeToDisk(token);
   _isSetupYet = true;
   startBot(token);
 }
@@ -94,3 +94,13 @@ export function readFromDisk(): AuthData | null {
     return null;
   }
 }
+
+/** Used so we can stub the functions */
+export const _this = {
+  writeToDisk,
+  readFromDisk,
+  finishSetup,
+  setup,
+  getOTP,
+  isSetupYet,
+};
