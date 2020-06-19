@@ -1,3 +1,10 @@
+import { Express } from 'express';
+import * as bodyparser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
+import { StartServerOptions } from './server.types';
+import { setUpRoutes } from './routes';
+import { newExpressApp } from './util';
+
 /**
  * In order to function a Twitch Chatbot needs an http server.
  *
@@ -7,9 +14,20 @@
  * 2. allowing streamers to "invite" your bot to their chat
  *
  */
-
-import { StartServerOptions } from './server.types';
-
 export async function startServer(
-  _options: StartServerOptions,
-): Promise<void> {}
+  options: StartServerOptions,
+): Promise<Express> {
+  const app = newExpressApp();
+  app.use(cookieParser());
+  app.use(bodyparser.json());
+
+  app.set('view engine', 'ejs');
+
+  setUpRoutes(app, options);
+
+  app.listen(options.port, () =>
+    console.log(`HTTP-Server listening on port ${options.port}`),
+  );
+
+  return app;
+}

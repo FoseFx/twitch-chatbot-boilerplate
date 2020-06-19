@@ -19,7 +19,7 @@ describe('env.ts', () => {
     process.env.TWITCH_CLIENT_ID = 'http://localhost:3000';
 
     expect(env.loadEnvVariables).toThrow(
-      'Not all necessary environment variables were set. Missing: PORT, TWITCH_CLIENT_SECRET',
+      'Not all necessary environment variables were set. Missing: PORT, TWITCH_CLIENT_SECRET, BOTNAME',
     );
   });
 

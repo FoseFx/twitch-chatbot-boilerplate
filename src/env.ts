@@ -8,6 +8,7 @@ export function loadEnvVariables(): void {
     'PORT',
     'TWITCH_CLIENT_ID',
     'TWITCH_CLIENT_SECRET',
+    'BOTNAME',
   ];
   const missingKeys = [];
 
