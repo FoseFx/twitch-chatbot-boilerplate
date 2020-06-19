@@ -13,18 +13,19 @@ export function setUpRoutes(
   app: Express,
   startOptions: StartServerOptions,
 ): void {
-  app.get('/', home);
-  app.get('/add', add(startOptions));
-  app.get('/setup', setup(startOptions));
+  app.get('/', _this.home);
+  app.get('/add', _this.add(startOptions));
+  app.get('/setup', _this.setup(startOptions));
   app.get('/setup/callback', setupCallback(startOptions));
-  app.get('*', notfound);
-  app.use(errorpage);
+  app.get('*', _this.notfound);
+  app.use(_this.errorpage);
 }
 
 export function home(_req: Request, res: Response): void {
   res.redirect('/add');
 }
 
+/** Using this route streamers can add the bot to their chat */
 export function add(startOptions: StartServerOptions): RequestHandler {
   const { botname } = startOptions;
   return function (_req: Request, res: Response): void {
@@ -40,6 +41,7 @@ export function add(startOptions: StartServerOptions): RequestHandler {
   };
 }
 
+/** Using this route the owner can connect the bot's twitch account with the bot */
 export function setup(startOptions: StartServerOptions): RequestHandler {
   return function (req: Request, res: Response): void {
     if (isSetupYet()) {
@@ -89,3 +91,12 @@ export function errorpage(
   });
   throw error;
 }
+
+export const _this = {
+  setUpRoutes,
+  home,
+  add,
+  setup,
+  notfound,
+  errorpage,
+};

@@ -38,6 +38,7 @@ export function getOAuthUrl(
   return redirectURL;
 }
 
+/** The RequestHandler that handles /setup/callback */
 export function setupCallback(options: StartServerOptions): RequestHandler {
   return async function (req: Request, res: Response): Promise<void> {
     const { token } = req.cookies;
