@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { Response as FetchResponse } from 'node-fetch';
-import { Request, Response, RequestHandler } from 'express';
+import { Request, Response, RequestHandler, NextFunction } from 'express';
 import { StartServerOptions, TokenResponse } from './server.types';
 import { finishSetup } from '../setup';
 
@@ -40,7 +40,11 @@ export function getOAuthUrl(
 
 /** The RequestHandler that handles /setup/callback */
 export function setupCallback(options: StartServerOptions): RequestHandler {
-  return async function (req: Request, res: Response): Promise<void> {
+  return async function (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     const { code } = req.query; // authorization code
     if (!code) {
       res.status(400);
@@ -59,12 +63,7 @@ export function setupCallback(options: StartServerOptions): RequestHandler {
       )
       .then((token) => finishSetup(token))
       .then(() => res.render('ok'))
-      .catch((err: Error) => {
-        console.error(err);
-        throw new Error(
-          'An error has occurred while reaching out to the TwitchAPI',
-        );
-      });
+      .catch((e) => next(e));
   };
 }
 
@@ -83,7 +82,15 @@ export function obtainAccessToken(
 
   return fetch(reqURL, {
     method: 'post',
-  }).then((resp: FetchResponse) => resp.json());
+  }).then((resp: FetchResponse) => {
+    if (!resp.ok) {
+      console.log(resp);
+      throw new Error(
+        'An error has occurred while reaching out to the TwitchAPI',
+      );
+    }
+    return resp.json();
+  });
 }
 
 export const _this = {
