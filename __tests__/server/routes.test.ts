@@ -52,52 +52,12 @@ describe('routes', () => {
       expect(res.redirect).toHaveBeenCalledWith('/add');
     });
 
-    it('should 401 when no token provided', () => {
-      jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
-
-      const req = {
-        query: {},
-      } as Request;
-
-      const res = ({
-        status: jest.fn(),
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      const opts = { botname: 'Hey-Bot' } as StartServerOptions;
-
-      routes.setup(opts)(req, res, null);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-    });
-    it('should 401 when no token invalid', () => {
-      jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
-      jest.spyOn(setup, 'getOTP').mockReturnValue('testtest');
-
-      const req = ({
-        query: { token: 'test' },
-      } as unknown) as Request;
-
-      const res = ({
-        status: jest.fn(),
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      const opts = { botname: 'Hey-Bot' } as StartServerOptions;
-
-      routes.setup(opts)(req, res, null);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-    });
-
     it('should set cookie and redirect when token valid', () => {
       jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
       jest.spyOn(setup, 'getOTP').mockReturnValue('testtest');
       const spy = jest.spyOn(auth, 'getOAuthUrl').mockReturnValue('url');
 
-      const req = ({
-        query: { token: 'testtest' },
-      } as unknown) as Request;
+      const req = ({} as unknown) as Request;
 
       const res = ({
         redirect: jest.fn(),
@@ -112,9 +72,6 @@ describe('routes', () => {
 
       routes.setup(opts)(req, res, null);
 
-      expect(res.cookie).toHaveBeenCalledWith('token', 'testtest', {
-        httpOnly: true,
-      });
       expect(spy).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith('url');
     });
@@ -133,17 +90,17 @@ describe('routes', () => {
       const map = {};
       let use;
       const fakeApp = {
-        get: (key, val) => (map[key] = val),
+        get: (key, ...vals) => (map[key] = vals),
         use: (val) => (use = val),
       } as Express;
 
       routes.setUpRoutes(fakeApp, {} as StartServerOptions);
 
-      expect(map['/']).toEqual(routes.home);
-      expect(map['*']).toEqual(routes.notfound);
-      expect(map['/add']).toEqual(addHandler);
-      expect(map['/setup']).toEqual(setupHandler);
-      expect(map['/setup/callback']).toEqual(setupCbHandler);
+      expect(map['/'][0]).toEqual(routes.home);
+      expect(map['*'][0]).toEqual(routes.notfound);
+      expect(map['/add'][0]).toEqual(addHandler);
+      expect(map['/setup'][1]).toEqual(setupHandler);
+      expect(map['/setup/callback'][1]).toEqual(setupCbHandler);
       expect(use).toEqual(routes.errorpage);
     });
   });

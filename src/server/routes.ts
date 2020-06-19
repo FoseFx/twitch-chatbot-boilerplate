@@ -5,9 +5,10 @@ import {
   NextFunction,
   RequestHandler,
 } from 'express';
-import { isSetupYet, getOTP } from '../setup';
+import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
+import { hasValidToken } from './util';
 
 export function setUpRoutes(
   app: Express,
@@ -15,8 +16,12 @@ export function setUpRoutes(
 ): void {
   app.get('/', _this.home);
   app.get('/add', _this.add(startOptions));
-  app.get('/setup', _this.setup(startOptions));
-  app.get('/setup/callback', setupCallback(startOptions));
+  app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
+  app.get(
+    '/setup/callback',
+    hasValidToken('cookies'),
+    setupCallback(startOptions),
+  );
   app.get('*', _this.notfound);
   app.use(_this.errorpage);
 }
@@ -43,23 +48,12 @@ export function add(startOptions: StartServerOptions): RequestHandler {
 
 /** Using this route the owner can connect the bot's twitch account with the bot */
 export function setup(startOptions: StartServerOptions): RequestHandler {
-  return function (req: Request, res: Response): void {
+  return function (_req: Request, res: Response): void {
     if (isSetupYet()) {
       res.redirect('/add');
       return;
     }
 
-    const { token } = req.query;
-    if (!token || token !== getOTP()) {
-      res.status(401);
-      res.render('error', {
-        heading: '401 - Unauthorized',
-        message: 'Token invalid or not provided',
-      });
-      return;
-    }
-
-    res.cookie('token', token, { httpOnly: true });
     res.redirect(
       getOAuthUrl(
         startOptions,
