@@ -18,6 +18,7 @@ export function newExpressApp(): Express {
 export function hasValidToken(medium: 'query' | 'cookies'): RequestHandler {
   return function (req: Request, res: Response, next: NextFunction): void {
     const { token } = req[medium];
+
     if (!token || token !== getOTP()) {
       res.status(401);
       res.render('error', {

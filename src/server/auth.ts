@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { Response as FetchResponse } from 'node-fetch';
 import { Request, Response, RequestHandler } from 'express';
 import { StartServerOptions, TokenResponse } from './server.types';
-import { getOTP, finishSetup } from '../setup';
+import { finishSetup } from '../setup';
 
 /**
  * Converts array of scope strings to a list usable in URLs
@@ -41,16 +41,6 @@ export function getOAuthUrl(
 /** The RequestHandler that handles /setup/callback */
 export function setupCallback(options: StartServerOptions): RequestHandler {
   return async function (req: Request, res: Response): Promise<void> {
-    const { token } = req.cookies;
-    if (!token || token !== getOTP()) {
-      res.status(401);
-      res.render('error', {
-        heading: '401 - Unauthorized',
-        message: 'Token invalid or not provided',
-      });
-      return;
-    }
-
     const { code } = req.query; // authorization code
     if (!code) {
       res.status(400);

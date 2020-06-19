@@ -52,17 +52,6 @@ describe('auth', () => {
 
   describe('setupCallback', () => {
     const opts = {} as StartServerOptions;
-    it('should return 401 when no token is set', async () => {
-      const req = { cookies: {} } as Request;
-      const res = ({
-        status: jest.fn(),
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      await auth.setupCallback(opts)(req, res, null);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-    });
 
     it('should return 400 when no code is set', async () => {
       jest.spyOn(setup, 'getOTP').mockReturnValue('some');
