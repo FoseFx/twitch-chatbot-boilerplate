@@ -13,63 +13,32 @@ describe('util', () => {
       jest.spyOn(setup, 'getOTP').mockReturnValue('testtest');
     });
 
-    describe('401s', () => {
-      it('should 401 when no or invalid token provided in query', () => {
-        const next = jest.fn();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let req = { query: {} } as any;
+    it('should 401 when no or invalid token provided', () => {
+      const next = jest.fn();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let req = { cookies: {} } as any;
 
-        hasValidToken('query')(req, res, next);
+      hasValidToken('cookies')(req, res, next);
 
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.render).toHaveBeenCalledWith('error', {
-          heading: '401 - Unauthorized',
-          message: 'Token invalid or not provided',
-        });
-
-        req = {
-          query: { token: 'test' },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
-
-        hasValidToken('query')(req, res, next);
-
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.render).toHaveBeenCalledWith('error', {
-          heading: '401 - Unauthorized',
-          message: 'Token invalid or not provided',
-        });
+      expect(next).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.render).toHaveBeenCalledWith('error', {
+        heading: '401 - Unauthorized',
+        message: 'Token invalid or not provided',
       });
 
-      it('should 401 when no or invalid token provided in cookies', () => {
-        const next = jest.fn();
+      req = {
+        query: { token: 'test' },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let req = { cookies: {} } as any;
+      } as any;
 
-        hasValidToken('cookies')(req, res, next);
+      hasValidToken('query')(req, res, next);
 
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.render).toHaveBeenCalledWith('error', {
-          heading: '401 - Unauthorized',
-          message: 'Token invalid or not provided',
-        });
-
-        req = {
-          cookies: { token: 'test' },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
-
-        hasValidToken('cookies')(req, res, next);
-
-        expect(next).not.toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(401);
-        expect(res.render).toHaveBeenCalledWith('error', {
-          heading: '401 - Unauthorized',
-          message: 'Token invalid or not provided',
-        });
+      expect(next).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.render).toHaveBeenCalledWith('error', {
+        heading: '401 - Unauthorized',
+        message: 'Token invalid or not provided',
       });
     });
 
