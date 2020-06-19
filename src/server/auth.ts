@@ -32,7 +32,7 @@ export function getOAuthUrl(
     `?client_id=${opts.clientId}` +
     `&redirect_uri=${callbackURI}` +
     `&response_type=code` +
-    `&scope=${scopesToString(scopes)}` +
+    `&scope=${_this.scopesToString(scopes)}` +
     `&claims=${JSON.stringify(claims)}` +
     `&force_verify=true`;
   return redirectURL;
@@ -60,11 +60,12 @@ export function setupCallback(options: StartServerOptions): RequestHandler {
       return;
     }
 
-    await obtainAccessToken(
-      options,
-      code as string,
-      `${options.clientSecret}/setup/connect`,
-    )
+    await _this
+      .obtainAccessToken(
+        options,
+        code as string,
+        `${options.clientSecret}/setup/connect`,
+      )
       .then((token) => finishSetup(token))
       .then(() => res.render('ok'))
       .catch((err: Error) => {
@@ -93,3 +94,10 @@ export function obtainAccessToken(
     method: 'post',
   }).then((resp: FetchResponse) => resp.json());
 }
+
+export const _this = {
+  obtainAccessToken,
+  scopesToString,
+  getOAuthUrl,
+  setupCallback,
+};
