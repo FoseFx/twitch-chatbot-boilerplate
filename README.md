@@ -12,6 +12,7 @@ Uses:
 
 - [TypeScript][typescript]
 - [tmi.js (Twitch Messaging Interface)][tmijs]
+- [express][express]
 - [ESLint][eslint]
 - [Jest][jest]
 - [Prettier][prettier]
@@ -53,3 +54,4 @@ Licensed under the Unlicense. See the [LICENSE](https://github.com/fosefx/twitch
 [devtwitchtv]: https://dev.twitch.tv/
 [createtwitchapp]: https://dev.twitch.tv/docs/authentication/#registration
 [dotenv]: https://www.npmjs.com/package/dotenv
+[express]: https://expressjs.com/
