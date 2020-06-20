@@ -45,7 +45,7 @@ Licensed under the Unlicense. See the [LICENSE](https://github.com/fosefx/twitch
 [typescript]: https://www.typescriptlang.org/
 [tmijs]: https://tmijs.com/
 [license-badge]: https://img.shields.io/badge/license-Unlicense-blue.svg
-[license]: https://github.com/fosefx/node-typescript-boilerplate/blob/master/LICENSE
+[license]: https://github.com/fosefx/twitch-chatbot-boilerplate/blob/master/LICENSE
 [jest]: https://facebook.github.io/jest/
 [eslint]: https://github.com/eslint/eslint
 [prettier]: https://prettier.io
