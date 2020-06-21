@@ -54,10 +54,13 @@ export async function setup(
   return null;
 }
 
-export async function finishSetup(token: TokenResponse): Promise<void> {
+export async function finishSetup(
+  options: StartServerOptions,
+  token: TokenResponse,
+): Promise<void> {
   _this.writeToDisk(token);
   _isSetupYet = true;
-  startBot(token);
+  startBot(options, token);
 }
 
 export function writeToDisk(token: TokenResponse): void {

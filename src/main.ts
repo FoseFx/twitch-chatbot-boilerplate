@@ -17,4 +17,4 @@ const opts: StartServerOptions = {
 
 startServer(opts)
   .then(() => setup(opts))
-  .then((authData) => startBot(authData));
+  .then((authData) => startBot(opts, authData));

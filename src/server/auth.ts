@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import { Response as FetchResponse } from 'node-fetch';
 import { Request, Response, RequestHandler, NextFunction } from 'express';
-import { StartServerOptions, TokenResponse } from './server.types';
-import { finishSetup } from '../setup';
+import { StartServerOptions, TokenResponse, AuthData } from './server.types';
+import { writeToDisk, finishSetup } from '../setup';
 
 /**
  * Converts array of scope strings to a list usable in URLs
@@ -59,9 +59,9 @@ export function setupCallback(options: StartServerOptions): RequestHandler {
       .obtainAccessToken(
         options,
         code as string,
-        `${options.clientSecret}/setup/connect`,
+        `${options.host}/setup/callback`,
       )
-      .then((token) => finishSetup(token))
+      .then((token) => finishSetup(options, token))
       .then(() => res.render('ok'))
       .catch((e) => next(e));
   };
@@ -84,13 +84,47 @@ export function obtainAccessToken(
     method: 'post',
   }).then((resp: FetchResponse) => {
     if (!resp.ok) {
-      console.log(resp);
+      resp
+        .json()
+        .then((j) => console.log(j))
+        .catch();
       throw new Error(
         'An error has occurred while reaching out to the TwitchAPI',
       );
     }
     return resp.json();
   });
+}
+
+export async function refreshAccessToken(
+  options: StartServerOptions,
+  authData: AuthData,
+  write: boolean,
+): Promise<AuthData> {
+  const refreshURL =
+    `https://id.twitch.tv/oauth2/token` +
+    `?grant_type=refresh_token` +
+    `&refresh_token=${encodeURIComponent(authData.refresh_token)}` +
+    `&client_id=${options.clientId}` +
+    `&client_secret=${options.clientSecret}`;
+
+  const resp = await fetch(refreshURL, {
+    method: 'POST',
+  });
+  if (!resp.ok) {
+    throw new Error(
+      'Refresh request was rejected: ' +
+        resp.status +
+        ': ' +
+        (await resp.text()),
+    );
+  }
+
+  const json = (await resp.json()) as TokenResponse;
+  if (write) {
+    writeToDisk(json);
+  }
+  return json;
 }
 
 export const _this = {
