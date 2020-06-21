@@ -11,7 +11,7 @@ export async function startBot(
   if (_client !== null || authData === null) {
     return;
   }
-  _client = await _createNewClient(options, authData);
+  _client = await _this._createNewClient(options, authData);
 }
 
 export async function _createNewClient(
@@ -39,7 +39,7 @@ export async function _createNewClient(
   return client
     .connect()
     .then(() => client)
-    .catch((e) => _handleConnectError(options, authData, e));
+    .catch((e) => _this._handleConnectError(options, authData, e));
 }
 
 export async function _handleConnectError(
@@ -48,7 +48,7 @@ export async function _handleConnectError(
   error: string,
 ): Promise<Client> {
   if (error === 'Login authentication failed') {
-    return _handleAuthError(opts, authData);
+    return _this._handleAuthError(opts, authData);
   } else {
     throw new Error(error);
   }
@@ -59,7 +59,7 @@ export function _handleAuthError(
   authData: AuthData,
 ): Promise<Client> {
   return refreshAccessToken(opts, authData, true).then((newData) =>
-    _createNewClient(opts, newData),
+    _this._createNewClient(opts, newData),
   );
 }
 
@@ -67,4 +67,5 @@ export const _this = {
   startBot,
   _createNewClient,
   _handleConnectError,
+  _handleAuthError,
 };
