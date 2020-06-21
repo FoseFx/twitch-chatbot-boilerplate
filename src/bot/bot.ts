@@ -35,29 +35,20 @@ export async function _createNewClient(
     ],
   });
 
-  return _connectClient(options, authData, client);
-}
-
-export function _connectClient(
-  options: StartServerOptions,
-  authData: AuthData,
-  client: Client,
-): Promise<Client> {
-  // Note: _handleConnectError can cause recursion to this function
+  // Note: _handleConnectError causes recursion to this function
   return client
     .connect()
     .then(() => client)
-    .catch((e) => _handleConnectError(options, authData, client, e));
+    .catch((e) => _handleConnectError(options, authData, e));
 }
 
 export async function _handleConnectError(
   opts: StartServerOptions,
   authData: AuthData,
-  client: Client,
   error: string,
 ): Promise<Client> {
   if (error === 'Login authentication failed') {
-    return _handleAuthError(opts, authData, client);
+    return _handleAuthError(opts, authData);
   } else {
     throw new Error(error);
   }
@@ -66,10 +57,9 @@ export async function _handleConnectError(
 export function _handleAuthError(
   opts: StartServerOptions,
   authData: AuthData,
-  client: Client,
 ): Promise<Client> {
   return refreshAccessToken(opts, authData, true).then((newData) =>
-    _connectClient(opts, newData, client),
+    _createNewClient(opts, newData),
   );
 }
 
