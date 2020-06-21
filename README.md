@@ -42,10 +42,14 @@ Uses:
 
 Licensed under the Unlicense. See the [LICENSE](https://github.com/fosefx/twitch-chatbot-boilerplate/blob/master/LICENSE) file for details.
 
+The following files in `public/fonts` are licensed under the [SIL Open Font License][ofl], Version 1.1, Copyright (c) 2010-2011 by tyPoland Lukasz Dziedzic (team@latofonts.com) with Reserved Font Name "Lato":
+"lato-v16-latin-900.eot", "lato-v16-latin-900.svg", "lato-v16-latin-900.ttf", "lato-v16-latin-900.woff", "lato-v16-latin-900.woff2", "lato-v16-latin-regular.eot",lato-v16-latin-regular.svg", "lato-v16-latin-regular.ttf", "lato-v16-latin-regular.woff" and "lato-v16-latin-regular.woff2"
+
 [typescript]: https://www.typescriptlang.org/
 [tmijs]: https://tmijs.com/
 [license-badge]: https://img.shields.io/badge/license-Unlicense-blue.svg
 [license]: https://github.com/fosefx/twitch-chatbot-boilerplate/blob/master/LICENSE
+[ofl]: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
 [jest]: https://facebook.github.io/jest/
 [eslint]: https://github.com/eslint/eslint
 [prettier]: https://prettier.io

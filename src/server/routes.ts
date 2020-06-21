@@ -5,6 +5,7 @@ import {
   NextFunction,
   RequestHandler,
 } from 'express';
+import * as express from 'express';
 import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
@@ -22,6 +23,7 @@ export function setUpRoutes(
     hasValidToken('cookies'),
     setupCallback(startOptions),
   );
+  app.use(express.static('public'));
   app.get('*', _this.notfound);
   app.use(_this.errorpage);
 }
