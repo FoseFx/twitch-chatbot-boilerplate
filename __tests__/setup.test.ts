@@ -20,7 +20,7 @@ describe('setup.ts', () => {
   test('isSetupYet should return _isSetupYet and finishSetup should writeToDisk and startBot', async () => {
     setup.writeToDisk = jest.fn();
     expect(setup.isSetupYet()).toEqual(false);
-    await setup.finishSetup({} as TokenResponse);
+    await setup.finishSetup({} as StartServerOptions, {} as TokenResponse);
     expect(setup.isSetupYet()).toEqual(true);
     expect(setup.writeToDisk).toHaveBeenCalled();
     expect(bot.startBot).toHaveBeenCalled();
