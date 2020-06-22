@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import * as env from '../src/env';
+import * as env from '../../src/core/env';
 
 describe('env.ts', () => {
   const OLD_ENV = process.env;
@@ -25,7 +25,7 @@ describe('env.ts', () => {
 
   it('be silet when everything is fine', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('../.jest/utils').sampleEnv(process);
+    require('../../.jest/utils').sampleEnv(process);
     expect(env.loadEnvVariables).not.toThrowError();
   });
 });

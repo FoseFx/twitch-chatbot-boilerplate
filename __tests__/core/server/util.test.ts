@@ -1,5 +1,5 @@
-import * as setup from '../../src/setup';
-import { hasValidToken } from '../../src/server/util';
+import * as setup from '../../../src/core/setup';
+import { hasValidToken } from '../../../src/core/server/util';
 
 describe('util', () => {
   describe('hasValidToken()', () => {

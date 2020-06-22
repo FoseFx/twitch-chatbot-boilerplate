@@ -1,7 +1,10 @@
 import * as fs from 'fs';
-import { _this as setup } from '../src/setup';
-import * as bot from '../src/bot/bot';
-import { TokenResponse, StartServerOptions } from '../src/server/server.types';
+import { _this as setup } from '../../src/core/setup';
+import * as bot from '../../src/core/bot/bot';
+import {
+  TokenResponse,
+  StartServerOptions,
+} from '../../src/core/server/server.types';
 
 describe('setup.ts', () => {
   let oldWriteToDisk;

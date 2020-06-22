@@ -1,8 +1,8 @@
 import { Express, Request, Response } from 'express';
-import { _this as routes } from '../../src/server/routes';
-import * as auth from '../../src/server/auth';
-import * as setup from '../../src/setup';
-import { StartServerOptions } from '../../src/server/server.types';
+import { _this as routes } from '../../../src/core/server/routes';
+import * as auth from '../../../src/core/server/auth';
+import * as setup from '../../../src/core/setup';
+import { StartServerOptions } from '../../../src/core/server/server.types';
 
 describe('routes', () => {
   describe('add', () => {

@@ -1,8 +1,13 @@
-import { _this as bot } from '../../src/bot/bot';
-import * as auth from '../../src/server/auth';
-import { StartServerOptions, AuthData } from '../../src/server/server.types';
+import { _this as bot } from '../../../src/core/bot/bot';
+import * as auth from '../../../src/core/server/auth';
+import {
+  StartServerOptions,
+  AuthData,
+} from '../../../src/core/server/server.types';
 import { Client } from 'tmi.js';
+import * as clientReadyEventEmitter from '../../../src/core/event';
 import * as tmijs from 'tmi.js';
+import { EventEmitter } from 'events';
 
 const opts = {} as StartServerOptions;
 const authData = {} as AuthData;
@@ -106,12 +111,18 @@ describe('bot.ts', () => {
       bot.startBot(opts, null);
       expect(spy).not.toHaveBeenCalled();
     });
-    it('should start bot when not started already', () => {
+    it('should start bot when not started already', async () => {
+      const fakeEmit = jest.fn();
+      jest
+        .spyOn(clientReadyEventEmitter, 'getClientReadyEmitter')
+        .mockReturnValue(({ emit: fakeEmit } as unknown) as EventEmitter);
       const spy = jest
         .spyOn(bot, '_createNewClient')
-        .mockResolvedValue(undefined);
-      bot.startBot(opts, authData);
+        .mockResolvedValue(undefined)
+        .mockReset();
+      await bot.startBot(opts, authData);
       expect(spy).toHaveBeenCalled();
+      expect(fakeEmit).toHaveBeenCalledWith('clientReady', undefined);
     });
     it('should not start bot when started already', () => {
       const spy = jest.spyOn(bot, '_createNewClient');

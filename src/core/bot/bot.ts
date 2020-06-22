@@ -1,6 +1,7 @@
 import { Client } from 'tmi.js';
 import { AuthData, StartServerOptions } from '../server/server.types';
 import { refreshAccessToken } from '../server/auth';
+import { getClientReadyEmitter } from '../event';
 
 let _client: Client | null = null;
 
@@ -12,6 +13,7 @@ export async function startBot(
     return;
   }
   _client = await _this._createNewClient(options, authData);
+  getClientReadyEmitter().emit('clientReady', _client);
 }
 
 export async function _createNewClient(

@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import * as nock from 'nock';
-import { _this as auth } from '../../src/server/auth';
-import * as setup from '../../src/setup';
+import { _this as auth } from '../../../src/core/server/auth';
+import * as setup from '../../../src/core/setup';
 import {
   StartServerOptions,
   TokenResponse,
   AuthData,
-} from '../../src/server/server.types';
+} from '../../../src/core/server/server.types';
 
 describe('auth', () => {
   afterEach(() => {

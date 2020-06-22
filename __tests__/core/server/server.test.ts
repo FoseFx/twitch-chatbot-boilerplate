@@ -1,8 +1,8 @@
 import { Express } from 'express';
-import * as util from '../../src/server/util';
-import * as routes from '../../src/server/routes';
-import * as server from '../../src/server/server';
-import { StartServerOptions } from '../../src/server/server.types';
+import * as util from '../../../src/core/server/util';
+import * as routes from '../../../src/core/server/routes';
+import * as server from '../../../src/core/server/server';
+import { StartServerOptions } from '../../../src/core/server/server.types';
 
 describe('Server', () => {
   let consoleMock;
