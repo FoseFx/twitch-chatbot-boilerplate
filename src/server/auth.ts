@@ -84,13 +84,15 @@ export function obtainAccessToken(
     method: 'post',
   }).then((resp: FetchResponse) => {
     if (!resp.ok) {
-      resp
+      return resp
         .json()
         .then((j) => console.log(j))
-        .catch();
-      throw new Error(
-        'An error has occurred while reaching out to the TwitchAPI',
-      );
+        .catch(() => ({}))
+        .then(() => {
+          throw new Error(
+            'An error has occurred while reaching out to the TwitchAPI',
+          );
+        });
     }
     return resp.json();
   });
