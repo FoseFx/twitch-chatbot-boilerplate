@@ -132,4 +132,5 @@ export const _this = {
   scopesToString,
   getOAuthUrl,
   setupCallback,
+  refreshAccessToken,
 };

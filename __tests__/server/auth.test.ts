@@ -5,6 +5,7 @@ import * as setup from '../../src/setup';
 import {
   StartServerOptions,
   TokenResponse,
+  AuthData,
 } from '../../src/server/server.types';
 
 describe('auth', () => {
@@ -90,6 +91,72 @@ describe('auth', () => {
 
       expect(res.render).toHaveBeenCalledWith('ok');
       expect(fSspy).toHaveBeenCalled();
+    });
+  });
+
+  describe('refreshAccessToken', () => {
+    const opts = ({
+      clientId: 'clientId',
+      clientSecret: 'clientSecret',
+    } as unknown) as StartServerOptions;
+
+    const authData = ({
+      refresh_token: 'some refreshTöken',
+    } as unknown) as AuthData;
+
+    it('should return error when request fails', () => {
+      const writeSpy = jest
+        .spyOn(setup, 'writeToDisk')
+        .mockImplementation(() => ({}));
+
+      const respObj = { status: 400, message: 'Some Error idk' };
+
+      nock('https://id.twitch.tv')
+        .post('/oauth2/token')
+        .query({
+          grant_type: 'refresh_token',
+          refresh_token: authData.refresh_token,
+          client_id: opts.clientId,
+          client_secret: opts.clientSecret,
+        })
+        .reply(400, respObj);
+
+      return auth.refreshAccessToken(opts, authData, true).catch((e) => {
+        expect(e).toEqual(
+          new Error(
+            'Refresh request was rejected: 400: ' + JSON.stringify(respObj),
+          ),
+        );
+        expect(writeSpy).not.toHaveBeenCalled();
+      });
+    });
+    it('should return new authData and writeToDisk', () => {
+      const writeSpy = jest
+        .spyOn(setup, 'writeToDisk')
+        .mockImplementation(() => ({}));
+
+      const respObj = {
+        access_token: 'someAT',
+        refresh_token: 'someRT',
+        expires_in: 6969,
+      } as TokenResponse;
+
+      nock('https://id.twitch.tv')
+        .post('/oauth2/token')
+        .query({
+          grant_type: 'refresh_token',
+          refresh_token: authData.refresh_token,
+          client_id: opts.clientId,
+          client_secret: opts.clientSecret,
+        })
+        .reply(200, respObj);
+
+      return auth
+        .refreshAccessToken(opts, authData, true)
+        .then((data: AuthData) => {
+          expect(data).toEqual(respObj);
+          expect(writeSpy).toHaveBeenCalled();
+        });
     });
   });
 });
