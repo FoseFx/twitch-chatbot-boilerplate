@@ -36,7 +36,12 @@ export function home(_req: Request, res: Response): void {
 export function add(startOptions: StartServerOptions): RequestHandler {
   const { botname } = startOptions;
   return function (_req: Request, res: Response): void {
-    res.render('add', { botname });
+    const twitchURL = getOAuthUrl(
+      startOptions,
+      [],
+      `${startOptions.host}/add/callback`,
+    );
+    res.render('add', { botname, twitchURL });
   };
 }
 

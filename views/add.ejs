@@ -2,10 +2,42 @@
 <html lang="en">
   <head>
     <%- include('partials/head.ejs') %>
-    <title>Use <%= botname %></title>
+    <style>
+      .twitch-button {
+        border: none;
+        background: #9146ff;
+        color: #f0f0ff;
+        display: inline-flex;
+        align-items: center;
+        margin: 0 auto;
+        border-radius: 4px;
+        padding: 8px 15px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .twitch-button > img {
+        padding-right: 8px;
+      }
+    </style>
+    <title><%= botname %></title>
   </head>
   <body>
     <h1>Welcome to <%= botname %>!</h1>
-    <p>TODO</p>
+
+    <p>
+      Here is lots of space for you to explain your users what your bot does.
+      You can edit it here: <code>views/add.ejs</code><br /><br />
+      Connect with your twitch account and <%= botname %> will join your chat!
+    </p>
+
+    <a class="twitch-button" href="<%= twitchURL %>">
+      <img
+        src="/TwitchGlitchWhite.png"
+        alt="Glitch"
+        aria-hidden="true"
+        height="30px"
+      />
+      Continue with twitch
+    </a>
   </body>
 </html>

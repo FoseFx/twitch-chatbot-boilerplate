@@ -7,6 +7,10 @@ import { StartServerOptions } from '../../../src/core/server/server.types';
 describe('routes', () => {
   describe('add', () => {
     it('should render', () => {
+      jest
+        .spyOn(auth, 'getOAuthUrl')
+        .mockReturnValue('https://www.test.com/test?test');
+
       const res = ({
         render: jest.fn(),
       } as unknown) as Response;
@@ -15,7 +19,10 @@ describe('routes', () => {
 
       routes.add(opts)({} as Request, res, null);
 
-      expect(res.render).toHaveBeenCalledWith('add', { botname: 'Hey-Bot' });
+      expect(res.render).toHaveBeenCalledWith('add', {
+        botname: 'Hey-Bot',
+        twitchURL: 'https://www.test.com/test?test',
+      });
     });
   });
 
