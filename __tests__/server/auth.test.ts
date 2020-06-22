@@ -116,7 +116,31 @@ describe('auth', () => {
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it('should fisnishSetup() and return ok, when ok', async () => {
+    it('should return error when obtainAccessCode fails', async () => {
+      jest.spyOn(setup, 'getOTP').mockReturnValue('some');
+      jest
+        .spyOn(auth, 'obtainAccessToken')
+        .mockRejectedValue(new Error('Idk, you send bs or sth'));
+
+      const req = ({
+        cookies: { token: 'some' },
+        query: { code: 'somecode' },
+      } as unknown) as Request;
+
+      const res = ({
+        status: jest.fn(),
+        render: jest.fn(),
+      } as unknown) as Response;
+
+      const next = jest.fn();
+
+      await auth.setupCallback(opts)(req, res, next);
+
+      expect(res.render).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(new Error('Idk, you send bs or sth'));
+    });
+
+    it('should finishSetup() and return ok, when ok', async () => {
       jest.spyOn(setup, 'getOTP').mockReturnValue('some');
       jest
         .spyOn(auth, 'obtainAccessToken')
