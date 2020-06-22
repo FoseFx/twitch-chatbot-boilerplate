@@ -1,5 +1,6 @@
+import { Response } from 'express';
 import * as setup from '../../../src/core/setup';
-import { hasValidToken } from '../../../src/core/server/util';
+import { hasValidToken, onlyWhenSetup } from '../../../src/core/server/util';
 
 describe('util', () => {
   describe('hasValidToken()', () => {
@@ -58,6 +59,35 @@ describe('util', () => {
       expect(res.cookie).toHaveBeenCalledWith('token', 'testtest', {
         httpOnly: true,
       });
+    });
+  });
+
+  describe('onlyWhenSetup', () => {
+    it('should return 503 when not setup yet', () => {
+      const spy = jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
+
+      const res = ({
+        status: jest.fn(),
+        render: jest.fn(),
+      } as unknown) as Response;
+
+      const next = jest.fn();
+
+      onlyWhenSetup(null, res, next);
+
+      expect(spy).toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(503);
+    });
+
+    it('should call next when setup', () => {
+      jest.spyOn(setup, 'isSetupYet').mockReturnValue(true);
+
+      const next = jest.fn();
+
+      onlyWhenSetup(null, null, next);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });

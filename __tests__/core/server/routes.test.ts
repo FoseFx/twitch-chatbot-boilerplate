@@ -6,25 +6,7 @@ import { StartServerOptions } from '../../../src/core/server/server.types';
 
 describe('routes', () => {
   describe('add', () => {
-    it('should return 503 when not setup yet', () => {
-      const spy = jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
-
-      const res = ({
-        status: jest.fn(),
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      const opts = { botname: 'Hey-Bot' } as StartServerOptions;
-
-      routes.add(opts)({} as Request, res, null);
-
-      expect(spy).toHaveBeenCalled();
-      expect(res.status).toHaveBeenCalledWith(503);
-    });
-
-    it('should render when set-up', () => {
-      jest.spyOn(setup, 'isSetupYet').mockReturnValue(true);
-
+    it('should render', () => {
       const res = ({
         render: jest.fn(),
       } as unknown) as Response;
@@ -98,7 +80,7 @@ describe('routes', () => {
 
       expect(map['/'][0]).toEqual(routes.home);
       expect(map['*'][0]).toEqual(routes.notfound);
-      expect(map['/add'][0]).toEqual(addHandler);
+      expect(map['/add'][1]).toEqual(addHandler);
       expect(map['/setup'][1]).toEqual(setupHandler);
       expect(map['/setup/callback'][1]).toEqual(setupCbHandler);
       expect(use).toEqual(routes.errorpage);

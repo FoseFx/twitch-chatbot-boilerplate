@@ -6,7 +6,7 @@ import {
   Response,
   NextFunction,
 } from 'express';
-import { getOTP } from '../setup';
+import { getOTP, isSetupYet } from '../setup';
 
 export function newExpressApp(): Express {
   return express();
@@ -30,4 +30,20 @@ export function hasValidToken(medium: 'query' | 'cookies'): RequestHandler {
       next();
     }
   };
+}
+
+export function onlyWhenSetup(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+): void {
+  if (isSetupYet()) {
+    next();
+    return;
+  }
+  res.status(503);
+  res.render('error', {
+    heading: '503 - Not set up yet',
+    message: 'The owner did not finish the setup yet. Please be patient.',
+  });
 }

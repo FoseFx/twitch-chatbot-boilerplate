@@ -9,14 +9,14 @@ import * as express from 'express';
 import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
-import { hasValidToken } from './util';
+import { hasValidToken, onlyWhenSetup } from './util';
 
 export function setUpRoutes(
   app: Express,
   startOptions: StartServerOptions,
 ): void {
   app.get('/', _this.home);
-  app.get('/add', _this.add(startOptions));
+  app.get('/add', onlyWhenSetup, _this.add(startOptions));
   app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
   app.get(
     '/setup/callback',
@@ -36,15 +36,7 @@ export function home(_req: Request, res: Response): void {
 export function add(startOptions: StartServerOptions): RequestHandler {
   const { botname } = startOptions;
   return function (_req: Request, res: Response): void {
-    if (isSetupYet()) {
-      res.render('add', { botname });
-      return;
-    }
-    res.status(503);
-    res.render('error', {
-      heading: '503 - Not set up yet',
-      message: 'The owner did not finish the setup yet. Please be patient.',
-    });
+    res.render('add', { botname });
   };
 }
 
