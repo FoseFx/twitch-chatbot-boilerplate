@@ -10,13 +10,14 @@ import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
 import { hasValidToken, onlyWhenSetup } from './util';
+import { addRH } from './add';
 
 export function setUpRoutes(
   app: Express,
   startOptions: StartServerOptions,
 ): void {
   app.get('/', _this.home);
-  app.get('/add', onlyWhenSetup, _this.add(startOptions));
+  app.get('/add', onlyWhenSetup, addRH(startOptions));
   app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
   app.get(
     '/setup/callback',
@@ -30,19 +31,6 @@ export function setUpRoutes(
 
 export function home(_req: Request, res: Response): void {
   res.redirect('/add');
-}
-
-/** Using this route streamers can add the bot to their chat */
-export function add(startOptions: StartServerOptions): RequestHandler {
-  const { botname } = startOptions;
-  return function (_req: Request, res: Response): void {
-    const twitchURL = getOAuthUrl(
-      startOptions,
-      [],
-      `${startOptions.host}/add/callback`,
-    );
-    res.render('add', { botname, twitchURL });
-  };
 }
 
 /** Using this route the owner can connect the bot's twitch account with the bot */
@@ -88,7 +76,6 @@ export function errorpage(
 export const _this = {
   setUpRoutes,
   home,
-  add,
   setup,
   notfound,
   errorpage,

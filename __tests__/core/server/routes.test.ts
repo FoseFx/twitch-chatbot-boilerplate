@@ -1,31 +1,11 @@
 import { Express, Request, Response } from 'express';
 import { _this as routes } from '../../../src/core/server/routes';
 import * as auth from '../../../src/core/server/auth';
+import * as add from '../../../src/core/server/add';
 import * as setup from '../../../src/core/setup';
 import { StartServerOptions } from '../../../src/core/server/server.types';
 
 describe('routes', () => {
-  describe('add', () => {
-    it('should render', () => {
-      jest
-        .spyOn(auth, 'getOAuthUrl')
-        .mockReturnValue('https://www.test.com/test?test');
-
-      const res = ({
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      const opts = { botname: 'Hey-Bot' } as StartServerOptions;
-
-      routes.add(opts)({} as Request, res, null);
-
-      expect(res.render).toHaveBeenCalledWith('add', {
-        botname: 'Hey-Bot',
-        twitchURL: 'https://www.test.com/test?test',
-      });
-    });
-  });
-
   describe('setup', () => {
     it('should redirect to /add when setup already', () => {
       jest.spyOn(setup, 'isSetupYet').mockReturnValue(true);
@@ -72,7 +52,7 @@ describe('routes', () => {
       const setupHandler = jest.fn();
       const setupCbHandler = jest.fn();
 
-      jest.spyOn(routes, 'add').mockReturnValue(addHandler);
+      jest.spyOn(add, 'addRH').mockReturnValue(addHandler);
       jest.spyOn(routes, 'setup').mockReturnValue(setupHandler);
       jest.spyOn(auth, 'setupCallback').mockReturnValue(setupCbHandler);
 
