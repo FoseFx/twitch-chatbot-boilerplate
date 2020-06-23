@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+import { Response as FetchResponse } from 'node-fetch';
 import * as setup from '../../../src/core/setup';
 import {
   hasValidToken,
   onlyWhenSetup,
   hasCodeQuery,
+  extractFetchErrorMessage,
+  ensureFetchIsOk,
 } from '../../../src/core/server/util';
 
 describe('util', () => {
@@ -114,6 +117,69 @@ describe('util', () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(next).not.toHaveBeenCalled();
+    });
+    it('should call next when code is set', async () => {
+      const req = ({ query: { code: 'test' } } as unknown) as Request;
+
+      hasCodeQuery(req, res, next);
+      expect(res.status).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe('extractFetchErrorMessage', () => {
+    it('should return message when available', () => {
+      expect(
+        extractFetchErrorMessage({ status: 400, message: 'Mmhh' }),
+      ).toEqual('Mmhh');
+    });
+    it('should return status when no message available', () => {
+      expect(
+        extractFetchErrorMessage({ status: 400, mmessage: 'Mmhh' } as unknown),
+      ).toEqual('400');
+    });
+    it('should return object when no message or status available', () => {
+      expect(extractFetchErrorMessage({ test: 'test' } as unknown)).toEqual(
+        '{"test":"test"}',
+      );
+    });
+  });
+
+  describe('ensureFetchIsOk', () => {
+    it('should return resp when is resp is ok', () => {
+      const fakeResp = ({ ok: true } as unknown) as FetchResponse;
+
+      return ensureFetchIsOk(fakeResp).then((r) => expect(r).toEqual(fakeResp));
+    });
+    it('should return error with json when json body', () => {
+      expect.assertions(1);
+      const fakeResp = ({
+        ok: false,
+        json: () => Promise.resolve({ test: 'test' }),
+      } as unknown) as FetchResponse;
+
+      return ensureFetchIsOk(fakeResp).catch((error) => {
+        expect(error).toEqual(
+          new Error(
+            'An error has occurred while reaching out to the TwitchAPI: {"test":"test"}',
+          ),
+        );
+      });
+    });
+    it('should return generic error when json() fails', () => {
+      expect.assertions(1);
+      const fakeResp = ({
+        ok: false,
+        json: () => Promise.reject('Who cares?'),
+      } as unknown) as FetchResponse;
+
+      return ensureFetchIsOk(fakeResp).catch((error) => {
+        expect(error).toEqual(
+          new Error(
+            'An error has occurred while reaching out to the TwitchAPI',
+          ),
+        );
+      });
     });
   });
 });
