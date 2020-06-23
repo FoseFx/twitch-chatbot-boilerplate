@@ -1,5 +1,9 @@
 import { Client } from 'tmi.js';
-import { AuthData, StartServerOptions } from '../server/server.types';
+import {
+  AuthData,
+  StartServerOptions,
+  BasicProfile,
+} from '../server/server.types';
 import { refreshAccessToken } from '../server/auth';
 import { getClientReadyEmitter } from '../event';
 
@@ -14,6 +18,21 @@ export async function startBot(
   }
   _client = await _this._createNewClient(options, authData);
   getClientReadyEmitter().emit('clientReady', _client);
+}
+
+/**
+ * @return {Promise<string>} - the channel the bot has joined
+ */
+export async function joinChannel(profile: BasicProfile): Promise<string> {
+  if (_client === null) {
+    throw new Error('Bot not running yet, try again later');
+  }
+
+  const channel = profile.login;
+
+  return _client.join(channel).then(() => {
+    return channel;
+  });
 }
 
 export async function _createNewClient(

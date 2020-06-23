@@ -1,6 +1,10 @@
-import { Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as setup from '../../../src/core/setup';
-import { hasValidToken, onlyWhenSetup } from '../../../src/core/server/util';
+import {
+  hasValidToken,
+  onlyWhenSetup,
+  hasCodeQuery,
+} from '../../../src/core/server/util';
 
 describe('util', () => {
   describe('hasValidToken()', () => {
@@ -88,6 +92,28 @@ describe('util', () => {
       onlyWhenSetup(null, null, next);
 
       expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe('hasCodeQuery', () => {
+    let res: Response;
+    let next: NextFunction;
+
+    beforeEach(() => {
+      res = ({
+        status: jest.fn(),
+        render: jest.fn(),
+      } as unknown) as Response;
+      next = jest.fn();
+    });
+
+    it('should return 400 when no code is set', async () => {
+      const req = { query: {} } as Request;
+
+      hasCodeQuery(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });

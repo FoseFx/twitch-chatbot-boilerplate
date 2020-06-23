@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { Response as FetchResponse } from 'node-fetch';
 import {
   Express,
   RequestHandler,
@@ -46,4 +47,57 @@ export function onlyWhenSetup(
     heading: '503 - Not set up yet',
     message: 'The owner did not finish the setup yet. Please be patient.',
   });
+}
+
+/** Makes sure the code query parameter is set */
+export function hasCodeQuery(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void {
+  const { code } = req.query;
+  if (!code) {
+    res.status(400);
+    res.render('error', {
+      heading: 'Invalid response',
+      message: 'Code not provided',
+    });
+    return;
+  }
+  next();
+}
+
+export async function ensureFetchIsOk(
+  resp: FetchResponse,
+): Promise<FetchResponse> {
+  if (resp.ok) {
+    return resp;
+  }
+
+  const errorMessage =
+    'An error has occurred while reaching out to the TwitchAPI';
+
+  return resp
+    .json()
+    .catch(() => null)
+    .then((j) => {
+      throw new Error(
+        `${errorMessage}${
+          j !== null ? ': ' + extractFetchErrorMessage(j) : ''
+        }`,
+      );
+    });
+}
+
+export function extractFetchErrorMessage(json: {
+  status?: number;
+  message?: string;
+}): string {
+  if (json.message) {
+    return json.message;
+  }
+  if (json.status) {
+    return json.status + '';
+  }
+  return JSON.stringify(json);
 }

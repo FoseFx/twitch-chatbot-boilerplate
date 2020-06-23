@@ -1,8 +1,14 @@
 import fetch from 'node-fetch';
 import { Response as FetchResponse } from 'node-fetch';
 import { Request, Response, RequestHandler, NextFunction } from 'express';
-import { StartServerOptions, TokenResponse, AuthData } from './server.types';
+import {
+  StartServerOptions,
+  TokenResponse,
+  AuthData,
+  BasicProfile,
+} from './server.types';
 import { writeToDisk, finishSetup } from '../setup';
+import { ensureFetchIsOk } from './util';
 
 /**
  * Converts array of scope strings to a list usable in URLs
@@ -40,22 +46,14 @@ export function getOAuthUrl(
 
 /** The RequestHandler that handles /setup/callback */
 export function setupCallback(options: StartServerOptions): RequestHandler {
-  return async function (
+  return function (
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     const { code } = req.query; // authorization code
-    if (!code) {
-      res.status(400);
-      res.render('error', {
-        heading: 'Invalid response',
-        message: 'Code not provided',
-      });
-      return;
-    }
 
-    await _this
+    return _this
       .obtainAccessToken(
         options,
         code as string,
@@ -82,20 +80,9 @@ export function obtainAccessToken(
 
   return fetch(reqURL, {
     method: 'post',
-  }).then((resp: FetchResponse) => {
-    if (!resp.ok) {
-      return resp
-        .json()
-        .then((j) => console.log(j))
-        .catch(() => ({}))
-        .then(() => {
-          throw new Error(
-            'An error has occurred while reaching out to the TwitchAPI',
-          );
-        });
-    }
-    return resp.json();
-  });
+  })
+    .then(ensureFetchIsOk)
+    .then((resp: FetchResponse) => resp.json());
 }
 
 export async function refreshAccessToken(
@@ -127,6 +114,22 @@ export async function refreshAccessToken(
     writeToDisk(json);
   }
   return json;
+}
+
+export function getBasicProfileInfo(
+  options: StartServerOptions,
+  authData: AuthData,
+): Promise<BasicProfile> {
+  return fetch(`https://api.twitch.tv/helix/users`, {
+    method: 'get',
+    headers: {
+      'Client-Id': options.clientId,
+      Authorization: 'Bearer ' + authData.access_token,
+    },
+  })
+    .then(ensureFetchIsOk)
+    .then((resp) => resp.json())
+    .then((json) => json.data[0]);
 }
 
 export const _this = {

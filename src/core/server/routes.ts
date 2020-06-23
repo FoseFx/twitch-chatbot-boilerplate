@@ -9,8 +9,8 @@ import * as express from 'express';
 import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
-import { hasValidToken, onlyWhenSetup } from './util';
-import { addRH } from './add';
+import { hasValidToken, onlyWhenSetup, hasCodeQuery } from './util';
+import { addRH, addCallbackRH } from './add';
 
 export function setUpRoutes(
   app: Express,
@@ -18,10 +18,17 @@ export function setUpRoutes(
 ): void {
   app.get('/', _this.home);
   app.get('/add', onlyWhenSetup, addRH(startOptions));
+  app.get(
+    '/add/callback',
+    onlyWhenSetup,
+    hasCodeQuery,
+    addCallbackRH(startOptions),
+  );
   app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
   app.get(
     '/setup/callback',
     hasValidToken('cookies'),
+    hasCodeQuery,
     setupCallback(startOptions),
   );
   app.use(express.static('public'));

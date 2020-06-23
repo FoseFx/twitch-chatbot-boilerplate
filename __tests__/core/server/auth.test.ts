@@ -52,8 +52,6 @@ describe('auth', () => {
     });
 
     it('should handle errors by loggging the json response and returning an error', () => {
-      const logSpy = jest.spyOn(console, 'log');
-
       nock('https://id.twitch.tv')
         .post('/oauth2/token')
         .query({
@@ -68,10 +66,9 @@ describe('auth', () => {
       return auth.obtainAccessToken(opts, code, cbURL).catch((err) => {
         expect(err).toEqual(
           new Error(
-            'An error has occurred while reaching out to the TwitchAPI',
+            'An error has occurred while reaching out to the TwitchAPI: {"test":"test"}',
           ),
         );
-        expect(logSpy).toHaveBeenCalledWith(respObj);
       });
     });
 
@@ -102,19 +99,6 @@ describe('auth', () => {
 
   describe('setupCallback', () => {
     const opts = {} as StartServerOptions;
-
-    it('should return 400 when no code is set', async () => {
-      jest.spyOn(setup, 'getOTP').mockReturnValue('some');
-      const req = { cookies: { token: 'some' }, query: {} } as Request;
-      const res = ({
-        status: jest.fn(),
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      await auth.setupCallback(opts)(req, res, null);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-    });
 
     it('should return error when obtainAccessCode fails', async () => {
       jest.spyOn(setup, 'getOTP').mockReturnValue('some');
