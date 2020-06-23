@@ -3,6 +3,7 @@ import * as auth from '../../../src/core/server/auth';
 import {
   StartServerOptions,
   AuthData,
+  BasicProfile,
 } from '../../../src/core/server/server.types';
 import { Client } from 'tmi.js';
 import * as clientReadyEventEmitter from '../../../src/core/event';
@@ -128,6 +129,27 @@ describe('bot.ts', () => {
       const spy = jest.spyOn(bot, '_createNewClient');
       bot.startBot(opts, authData);
       expect(spy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('joinChannel', () => {
+    it('should throw an error, when bot not running', () => {
+      bot._setClient(null);
+      return bot
+        .joinChannel({ login: 'test' } as BasicProfile)
+        .catch((e) =>
+          expect(e).toEqual(new Error('Bot not running yet, try again later')),
+        );
+    });
+    it('should join channel', () => {
+      expect.assertions(1);
+      const fakeCl = ({
+        join: jest.fn().mockResolvedValue([]),
+      } as unknown) as Client;
+      bot._setClient(fakeCl);
+      return bot.joinChannel({ login: 'test' } as BasicProfile).then(() => {
+        expect(fakeCl.join).toHaveBeenCalledWith('test');
+      });
     });
   });
 });

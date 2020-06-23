@@ -84,9 +84,15 @@ export function _handleAuthError(
   );
 }
 
+export function _setClient(cl: Client): void {
+  _client = cl;
+}
+
 export const _this = {
   startBot,
+  joinChannel,
   _createNewClient,
   _handleConnectError,
   _handleAuthError,
+  _setClient,
 };
