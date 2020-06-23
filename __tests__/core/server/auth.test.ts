@@ -1,11 +1,15 @@
 import { Request, Response } from 'express';
 import * as nock from 'nock';
-import { _this as auth } from '../../../src/core/server/auth';
+import {
+  _this as auth,
+  getBasicProfileInfo,
+} from '../../../src/core/server/auth';
 import * as setup from '../../../src/core/setup';
 import {
   StartServerOptions,
   TokenResponse,
   AuthData,
+  BasicProfile,
 } from '../../../src/core/server/server.types';
 
 describe('auth', () => {
@@ -214,6 +218,23 @@ describe('auth', () => {
           expect(data).toEqual(respObj);
           expect(writeSpy).toHaveBeenCalled();
         });
+    });
+  });
+
+  describe('getBasicProfileInfo', () => {
+    it('should return BasicProfile of user', () => {
+      expect.assertions(1);
+      const user = { id: 'test', login: 'testtest' } as BasicProfile;
+      nock('https://api.twitch.tv')
+        .get('/helix/users')
+        .reply(200, { data: [user] });
+
+      return getBasicProfileInfo(
+        ({} as unknown) as StartServerOptions,
+        {} as AuthData,
+      ).then((resp) => {
+        expect(resp).toEqual(user);
+      });
     });
   });
 });
