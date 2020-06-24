@@ -6,6 +6,7 @@ import {
   TokenResponse,
 } from './server/server.types';
 import { startBot } from './bot/bot';
+import { ensureDirExists } from './util';
 
 const AUTH_PATH = './.config/auth.json';
 
@@ -64,11 +65,8 @@ export async function finishSetup(
 }
 
 export function writeToDisk(token: TokenResponse): void {
-  // make sure .config dir exists
   const dir = './.config';
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
+  ensureDirExists(dir);
 
   const { access_token, refresh_token } = token;
 

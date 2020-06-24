@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Client } from 'tmi.js';
 import {
   AuthData,
@@ -6,8 +7,10 @@ import {
 } from '../server/server.types';
 import { refreshAccessToken } from '../server/auth';
 import { getClientReadyEmitter } from '../event';
+import { ensureDirExists } from '../util';
 
 let _client: Client | null = null;
+let _channels: string[] = [];
 
 export async function startBot(
   options: StartServerOptions,
@@ -17,6 +20,11 @@ export async function startBot(
     return;
   }
   _client = await _this._createNewClient(options, authData);
+  _channels = _this._readChannelsFromDisk();
+
+  for (const channel of _channels) {
+    _client.join(channel);
+  }
   getClientReadyEmitter().emit('clientReady', _client);
 }
 
@@ -30,7 +38,13 @@ export async function joinChannel(profile: BasicProfile): Promise<string> {
 
   const channel = profile.login;
 
+  if (_channels.includes(channel)) {
+    throw new Error('Bot already joined this chat');
+  }
+
   return _client.join(channel).then(() => {
+    _channels.push(channel);
+    _this._storeChannelsOnDisk();
     return channel;
   });
 }
@@ -51,9 +65,6 @@ export async function _createNewClient(
       username: options.clientId,
       password: authData.access_token,
     },
-    channels: [
-      /* TODO */
-    ],
   });
 
   // Note: _handleConnectError causes recursion to this function
@@ -84,8 +95,29 @@ export function _handleAuthError(
   );
 }
 
+export function _storeChannelsOnDisk(): void {
+  const dir = './.config';
+  ensureDirExists(dir);
+  fs.writeFileSync(dir + '/channels.json', JSON.stringify(_channels));
+}
+
+export function _readChannelsFromDisk(): string[] {
+  const dir = './.config';
+  ensureDirExists(dir);
+  try {
+    const str = fs.readFileSync(dir + '/channels.json', 'utf-8');
+    return JSON.parse(str);
+  } catch {
+    return [];
+  }
+}
+
 export function _setClient(cl: Client): void {
   _client = cl;
+}
+
+export function _setChannels(ch: string[]): void {
+  _channels = ch;
 }
 
 export const _this = {
@@ -94,5 +126,8 @@ export const _this = {
   _createNewClient,
   _handleConnectError,
   _handleAuthError,
+  _storeChannelsOnDisk,
+  _readChannelsFromDisk,
   _setClient,
+  _setChannels,
 };

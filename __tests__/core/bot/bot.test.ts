@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { _this as bot } from '../../../src/core/bot/bot';
 import * as auth from '../../../src/core/server/auth';
 import {
@@ -114,16 +115,19 @@ describe('bot.ts', () => {
     });
     it('should start bot when not started already', async () => {
       const fakeEmit = jest.fn();
+      const fakeClient = ({ join: jest.fn() } as unknown) as Client;
+      jest.spyOn(bot, '_readChannelsFromDisk').mockReturnValue(['test']);
       jest
         .spyOn(clientReadyEventEmitter, 'getClientReadyEmitter')
         .mockReturnValue(({ emit: fakeEmit } as unknown) as EventEmitter);
       const spy = jest
         .spyOn(bot, '_createNewClient')
-        .mockResolvedValue(undefined)
-        .mockReset();
+        .mockReset()
+        .mockResolvedValue(fakeClient);
       await bot.startBot(opts, authData);
       expect(spy).toHaveBeenCalled();
-      expect(fakeEmit).toHaveBeenCalledWith('clientReady', undefined);
+      expect(fakeClient.join).toHaveBeenCalledWith('test');
+      expect(fakeEmit).toHaveBeenCalledWith('clientReady', fakeClient);
     });
     it('should not start bot when started already', () => {
       const spy = jest.spyOn(bot, '_createNewClient');
@@ -143,9 +147,11 @@ describe('bot.ts', () => {
     });
     it('should join channel', () => {
       expect.assertions(1);
+      bot._setChannels(['other']);
       const fakeCl = ({
         join: jest.fn().mockResolvedValue([]),
       } as unknown) as Client;
+      jest.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
       bot._setClient(fakeCl);
       return bot.joinChannel({ login: 'test' } as BasicProfile).then(() => {
         expect(fakeCl.join).toHaveBeenCalledWith('test');
