@@ -29,7 +29,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "start": "node build/src/main.js"
+    "start": "node -e 'require(\"./build/src/main.js\").main()'"
   },
   "author": "Max Baumann <max@fosefx.com>",
   "license": "Unlicense",

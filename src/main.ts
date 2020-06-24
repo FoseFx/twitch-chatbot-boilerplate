@@ -1,7 +1,8 @@
 import { initialize } from './core/core';
 import { ChatUserstate } from 'tmi.js';
 
-async function main() {
+/** Called using `npm run start` */
+export async function main(): Promise<void> {
   /**
    * Thank you for using this boilerplate!
    * Here is how it works (for more info checkout the README):
@@ -41,5 +42,3 @@ async function main() {
     },
   );
 }
-
-main();
