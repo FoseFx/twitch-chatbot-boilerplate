@@ -21,7 +21,7 @@ async function main() {
    *
    * Build something great!
    */
-  const client = await initialize();
+  const { client } = await initialize();
 
   console.info('Client is ready!');
 

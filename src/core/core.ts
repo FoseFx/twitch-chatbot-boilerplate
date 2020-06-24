@@ -1,3 +1,4 @@
+import { Express } from 'express';
 import { Client } from 'tmi.js';
 import { EventEmitter } from 'events';
 import { StartServerOptions } from './server/server.types';
@@ -7,7 +8,7 @@ import { setup } from './setup';
 import { startBot } from './bot/bot';
 import { setClientReadyEmitter } from './event';
 
-export function initialize(): Promise<Client> {
+export function initialize(): Promise<{ client: Client; app: Express }> {
   return new Promise((resolve, reject) => {
     loadEnvVariables(); // make sure all variables are available
 
@@ -24,13 +25,18 @@ export function initialize(): Promise<Client> {
     const clientEventEmitter = new EventEmitter();
     setClientReadyEmitter(clientEventEmitter);
 
+    let app: Express;
+
     startServer(opts)
-      .then(() => setup(opts))
+      .then((expressApp) => {
+        app = expressApp;
+        return setup(opts);
+      })
       .then((authData) => startBot(opts, authData))
       .catch((error) => reject(error));
 
-    clientEventEmitter.once('clientReady', (cl: Client) => {
-      resolve(cl);
+    clientEventEmitter.once('clientReady', (client: Client) => {
+      resolve({ client, app });
     });
   });
 }
