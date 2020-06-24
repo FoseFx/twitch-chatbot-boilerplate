@@ -2,6 +2,7 @@ import { Express, Request, Response } from 'express';
 import { _this as routes } from '../../../src/core/server/routes';
 import * as auth from '../../../src/core/server/auth';
 import * as add from '../../../src/core/server/add';
+import * as remove from '../../../src/core/server/remove';
 import * as setup from '../../../src/core/setup';
 import { StartServerOptions } from '../../../src/core/server/server.types';
 
@@ -50,11 +51,13 @@ describe('routes', () => {
     it('should setup routes correctly', () => {
       const addHandler = jest.fn();
       const addCbHandler = jest.fn();
+      const removeHandler = jest.fn();
       const setupHandler = jest.fn();
       const setupCbHandler = jest.fn();
 
       jest.spyOn(add, 'addRH').mockReturnValue(addHandler);
       jest.spyOn(add, 'addCallbackRH').mockReturnValue(addCbHandler);
+      jest.spyOn(remove, 'removeRH').mockReturnValue(removeHandler);
       jest.spyOn(routes, 'setup').mockReturnValue(setupHandler);
       jest.spyOn(auth, 'setupCallback').mockReturnValue(setupCbHandler);
 
@@ -71,6 +74,7 @@ describe('routes', () => {
       expect(map['*'][0]).toEqual(routes.notfound);
       expect(map['/add'][1]).toEqual(addHandler);
       expect(map['/add/callback'][2]).toEqual(addCbHandler);
+      expect(map['/remove'][1]).toEqual(removeHandler);
       expect(map['/setup'][1]).toEqual(setupHandler);
       expect(map['/setup/callback'][2]).toEqual(setupCbHandler);
       expect(use).toEqual(routes.errorpage);

@@ -11,6 +11,7 @@ import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
 import { hasValidToken, onlyWhenSetup, hasCodeQuery } from './util';
 import { addRH, addCallbackRH } from './add';
+import { removeRH } from './remove';
 
 export function setUpRoutes(
   app: Express,
@@ -24,6 +25,7 @@ export function setUpRoutes(
     hasCodeQuery,
     addCallbackRH(startOptions),
   );
+  app.get('/remove', onlyWhenSetup, removeRH(startOptions));
   app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
   app.get(
     '/setup/callback',

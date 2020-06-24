@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head.ejs') %> <%-
+    include('partials/twitch_button.ejs') %>
+    <title>Remove <%= botname %></title>
+  </head>
+  <body>
+    <h1>Sorry to see you go!</h1>
+
+    <p>
+      Here is lots of space for you to explain your users why they should not
+      leave. You can edit it here: <code>views/remove.ejs</code><br /><br />
+      Connect with your twitch account and <%= botname %> will disconnect from
+      your chat, forever!
+    </p>
+
+    <a class="twitch-button" href="<%= twitchURL %>">
+      <img
+        src="/TwitchGlitchWhite.png"
+        alt="Glitch"
+        aria-hidden="true"
+        height="30px"
+      />
+      Continue with twitch
+    </a>
+  </body>
+</html>
