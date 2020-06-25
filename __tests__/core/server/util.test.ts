@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Response as FetchResponse } from 'node-fetch';
 import * as setup from '../../../src/core/setup';
+import * as bot from '../../../src/core/bot/bot';
 import {
   hasValidToken,
   onlyWhenSetup,
@@ -72,6 +73,7 @@ describe('util', () => {
   describe('onlyWhenSetup', () => {
     it('should return 503 when not setup yet', () => {
       const spy = jest.spyOn(setup, 'isSetupYet').mockReturnValue(false);
+      jest.spyOn(bot, 'isBotRunning').mockReturnValue(false);
 
       const res = ({
         status: jest.fn(),
@@ -89,6 +91,7 @@ describe('util', () => {
 
     it('should call next when setup', () => {
       jest.spyOn(setup, 'isSetupYet').mockReturnValue(true);
+      jest.spyOn(bot, 'isBotRunning').mockReturnValue(true);
 
       const next = jest.fn();
 

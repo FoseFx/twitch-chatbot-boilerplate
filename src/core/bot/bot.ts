@@ -32,10 +32,6 @@ export async function startBot(
  * @return {Promise<string>} - the channel the bot has joined
  */
 export async function joinChannel(profile: BasicProfile): Promise<string> {
-  if (_client === null) {
-    throw new Error('Bot not running yet, try again later');
-  }
-
   const channel = profile.login;
 
   if (_channels.includes(channel)) {
@@ -53,10 +49,6 @@ export async function joinChannel(profile: BasicProfile): Promise<string> {
  * @return {Promise<string>} - the channel the bot has left
  */
 export async function leaveChannel(profile: BasicProfile): Promise<string> {
-  if (_client === null) {
-    throw new Error('Bot not running yet, try again later');
-  }
-
   const channel = profile.login;
 
   return _client.part(channel).then(() => {
@@ -89,6 +81,10 @@ export async function _createNewClient(
     .connect()
     .then(() => client)
     .catch((e) => _this._handleConnectError(options, authData, e));
+}
+
+export function isBotRunning(): boolean {
+  return !!_client;
 }
 
 export async function _handleConnectError(

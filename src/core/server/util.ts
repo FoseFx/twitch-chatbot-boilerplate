@@ -8,6 +8,7 @@ import {
   NextFunction,
 } from 'express';
 import { getOTP, isSetupYet } from '../setup';
+import { isBotRunning } from '../bot/bot';
 
 export function newExpressApp(): Express {
   return express();
@@ -38,7 +39,7 @@ export function onlyWhenSetup(
   res: Response,
   next: NextFunction,
 ): void {
-  if (isSetupYet()) {
+  if (isSetupYet() && isBotRunning()) {
     next();
     return;
   }

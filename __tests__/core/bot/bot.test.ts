@@ -137,14 +137,6 @@ describe('bot.ts', () => {
   });
 
   describe('joinChannel', () => {
-    it('should throw an error, when bot not running', () => {
-      bot._setClient(null);
-      return bot
-        .joinChannel({ login: 'test' } as BasicProfile)
-        .catch((e) =>
-          expect(e).toEqual(new Error('Bot not running yet, try again later')),
-        );
-    });
     it('should join channel', () => {
       expect.assertions(1);
       bot._setChannels(['other']);
@@ -160,14 +152,6 @@ describe('bot.ts', () => {
   });
 
   describe('leaveChannel', () => {
-    it('should throw an error, when bot not running', () => {
-      bot._setClient(null);
-      return bot
-        .leaveChannel({ login: 'test' } as BasicProfile)
-        .catch((e) =>
-          expect(e).toEqual(new Error('Bot not running yet, try again later')),
-        );
-    });
     it('should leave channel', () => {
       expect.assertions(2);
       bot._setChannels(['other', 'test', 'another']);
