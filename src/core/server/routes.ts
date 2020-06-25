@@ -10,8 +10,8 @@ import { isSetupYet } from '../setup';
 import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
 import { hasValidToken, onlyWhenSetup, hasCodeQuery } from './util';
-import { addRH, addCallbackRH } from './add';
-import { removeRH, removeCallbackRH } from './remove';
+import { addCallbackRH } from './add';
+import { removeCallbackRH } from './remove';
 
 export function setUpRoutes(
   app: Express,
@@ -19,7 +19,11 @@ export function setUpRoutes(
 ): void {
   // Add
   app.get('/', _this.home);
-  app.get('/add', onlyWhenSetup, addRH(startOptions));
+  app.get(
+    '/add',
+    onlyWhenSetup,
+    _this.typicalRequestHandler('add', startOptions),
+  );
   app.get(
     '/add/callback',
     onlyWhenSetup,
@@ -28,7 +32,11 @@ export function setUpRoutes(
   );
 
   // Remove
-  app.get('/remove', onlyWhenSetup, removeRH(startOptions));
+  app.get(
+    '/remove',
+    onlyWhenSetup,
+    _this.typicalRequestHandler('remove', startOptions),
+  );
   app.get(
     '/remove/callback',
     onlyWhenSetup,
@@ -75,6 +83,22 @@ export function setup(startOptions: StartServerOptions): RequestHandler {
   };
 }
 
+/** Using this route streamers can add/remove the bot to/from their chat */
+export function typicalRequestHandler(
+  type: 'add' | 'remove',
+  startOptions: StartServerOptions,
+): RequestHandler {
+  const { botname } = startOptions;
+  return function (_req: Request, res: Response): void {
+    const twitchURL = getOAuthUrl(
+      startOptions,
+      [],
+      `${startOptions.host}/${type}/callback`,
+    );
+    res.render(type, { botname, twitchURL });
+  };
+}
+
 export function notfound(_req: Request, res: Response): void {
   res.status(404).render('error', {
     heading: '404 - Not Found',
@@ -101,6 +125,7 @@ export const _this = {
   setUpRoutes,
   home,
   setup,
+  typicalRequestHandler,
   notfound,
   errorpage,
 };

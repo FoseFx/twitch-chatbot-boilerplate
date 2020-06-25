@@ -1,5 +1,8 @@
 import { Express, Request, Response } from 'express';
-import { _this as routes } from '../../../src/core/server/routes';
+import {
+  _this as routes,
+  typicalRequestHandler,
+} from '../../../src/core/server/routes';
 import * as auth from '../../../src/core/server/auth';
 import * as add from '../../../src/core/server/add';
 import * as remove from '../../../src/core/server/remove';
@@ -56,9 +59,10 @@ describe('routes', () => {
       const setupHandler = jest.fn();
       const setupCbHandler = jest.fn();
 
-      jest.spyOn(add, 'addRH').mockReturnValue(addHandler);
+      jest.spyOn(routes, 'typicalRequestHandler').mockImplementation((type) => {
+        return type === 'add' ? addHandler : removeHandler;
+      });
       jest.spyOn(add, 'addCallbackRH').mockReturnValue(addCbHandler);
-      jest.spyOn(remove, 'removeRH').mockReturnValue(removeHandler);
       jest.spyOn(remove, 'removeCallbackRH').mockReturnValue(removeCbHandler);
       jest.spyOn(routes, 'setup').mockReturnValue(setupHandler);
       jest.spyOn(auth, 'setupCallback').mockReturnValue(setupCbHandler);
@@ -88,5 +92,47 @@ describe('routes', () => {
     const res = ({ redirect: jest.fn() } as unknown) as Response;
     routes.home({} as Request, res);
     expect(res.redirect).toHaveBeenCalledWith('/add');
+  });
+
+  describe('typicalRequestHandler', () => {
+    const opts = {
+      botname: 'Hey-Bot',
+      host: 'http://localhost:8080',
+    } as StartServerOptions;
+    const exp = {
+      botname: 'Hey-Bot',
+      twitchURL: 'https://www.test.com/test?test',
+    };
+
+    let res;
+    let getOAuthUrlSpy;
+    beforeEach(() => {
+      getOAuthUrlSpy = jest
+        .spyOn(auth, 'getOAuthUrl')
+        .mockReset()
+        .mockReturnValue('https://www.test.com/test?test');
+
+      res = ({
+        render: jest.fn(),
+      } as unknown) as Response;
+    });
+    it('should render add', () => {
+      typicalRequestHandler('add', opts)({} as Request, res, null);
+      expect(res.render).toHaveBeenCalledWith('add', exp);
+      expect(getOAuthUrlSpy).toHaveBeenCalledWith(
+        opts,
+        [],
+        'http://localhost:8080/add/callback',
+      );
+    });
+    it('should render remove', () => {
+      typicalRequestHandler('remove', opts)({} as Request, res, null);
+      expect(res.render).toHaveBeenCalledWith('remove', exp);
+      expect(getOAuthUrlSpy).toHaveBeenCalledWith(
+        opts,
+        [],
+        'http://localhost:8080/remove/callback',
+      );
+    });
   });
 });

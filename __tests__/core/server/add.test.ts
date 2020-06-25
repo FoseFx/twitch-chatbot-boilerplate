@@ -9,27 +9,6 @@ import {
 } from '../../../src/core/server/server.types';
 
 describe('add', () => {
-  describe('addRH', () => {
-    it('should render', () => {
-      jest
-        .spyOn(auth, 'getOAuthUrl')
-        .mockReturnValue('https://www.test.com/test?test');
-
-      const res = ({
-        render: jest.fn(),
-      } as unknown) as Response;
-
-      const opts = { botname: 'Hey-Bot' } as StartServerOptions;
-
-      add.addRH(opts)({} as Request, res, null);
-
-      expect(res.render).toHaveBeenCalledWith('add', {
-        botname: 'Hey-Bot',
-        twitchURL: 'https://www.test.com/test?test',
-      });
-    });
-  });
-
   describe('addCallbackRH', () => {
     it('should join channel', () => {
       const oATSpy = jest
