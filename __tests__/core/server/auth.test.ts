@@ -149,6 +149,17 @@ describe('auth', () => {
       refresh_token: 'some refreshTöken',
     } as unknown) as AuthData;
 
+    let networkMock;
+
+    beforeEach(() => {
+      networkMock = nock('https://id.twitch.tv').post('/oauth2/token').query({
+        grant_type: 'refresh_token',
+        refresh_token: authData.refresh_token,
+        client_id: opts.clientId,
+        client_secret: opts.clientSecret,
+      });
+    });
+
     it('should return error when request fails', () => {
       const writeSpy = jest
         .spyOn(setup, 'writeToDisk')
@@ -156,15 +167,7 @@ describe('auth', () => {
 
       const respObj = { status: 400, message: 'Some Error idk' };
 
-      nock('https://id.twitch.tv')
-        .post('/oauth2/token')
-        .query({
-          grant_type: 'refresh_token',
-          refresh_token: authData.refresh_token,
-          client_id: opts.clientId,
-          client_secret: opts.clientSecret,
-        })
-        .reply(400, respObj);
+      networkMock.reply(400, respObj);
 
       return auth.refreshAccessToken(opts, authData, true).catch((e) => {
         expect(e).toEqual(
@@ -186,15 +189,7 @@ describe('auth', () => {
         expires_in: 6969,
       } as TokenResponse;
 
-      nock('https://id.twitch.tv')
-        .post('/oauth2/token')
-        .query({
-          grant_type: 'refresh_token',
-          refresh_token: authData.refresh_token,
-          client_id: opts.clientId,
-          client_secret: opts.clientSecret,
-        })
-        .reply(200, respObj);
+      networkMock.reply(200, respObj);
 
       return auth
         .refreshAccessToken(opts, authData, true)
