@@ -40,32 +40,25 @@ describe('auth', () => {
     const respObj = { test: 'test' };
     const code = 'test';
     const cbURL = 'https://test.com/cb';
-    it('should request token', async () => {
-      nock('https://id.twitch.tv')
-        .post('/oauth2/token')
-        .query({
-          client_id: opts.clientId,
-          client_secret: opts.clientSecret,
-          code,
-          grant_type: 'authorization_code',
-          redirect_uri: cbURL,
-        })
-        .reply(200, respObj);
+    let networkMock;
 
+    beforeEach(() => {
+      networkMock = nock('https://id.twitch.tv').post('/oauth2/token').query({
+        client_id: opts.clientId,
+        client_secret: opts.clientSecret,
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: cbURL,
+      });
+    });
+
+    it('should request token', async () => {
+      networkMock.reply(200, respObj);
       expect(await auth.obtainAccessToken(opts, code, cbURL)).toEqual(respObj);
     });
 
     it('should handle errors by loggging the json response and returning an error', () => {
-      nock('https://id.twitch.tv')
-        .post('/oauth2/token')
-        .query({
-          client_id: opts.clientId,
-          client_secret: opts.clientSecret,
-          code,
-          grant_type: 'authorization_code',
-          redirect_uri: cbURL,
-        })
-        .reply(400, respObj);
+      networkMock.reply(400, respObj);
 
       return auth.obtainAccessToken(opts, code, cbURL).catch((err) => {
         expect(err).toEqual(
@@ -79,16 +72,7 @@ describe('auth', () => {
     it('should handle errors by failing to log non-json response and returning an error', () => {
       const logSpy = jest.spyOn(console, 'log').mockReset();
 
-      nock('https://id.twitch.tv')
-        .post('/oauth2/token')
-        .query({
-          client_id: opts.clientId,
-          client_secret: opts.clientSecret,
-          code,
-          grant_type: 'authorization_code',
-          redirect_uri: cbURL,
-        })
-        .reply(400, 'lololol');
+      networkMock.reply(400, 'lololol');
 
       return auth.obtainAccessToken(opts, code, cbURL).catch((err) => {
         expect(err).toEqual(
