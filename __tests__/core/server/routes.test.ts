@@ -52,12 +52,14 @@ describe('routes', () => {
       const addHandler = jest.fn();
       const addCbHandler = jest.fn();
       const removeHandler = jest.fn();
+      const removeCbHandler = jest.fn();
       const setupHandler = jest.fn();
       const setupCbHandler = jest.fn();
 
       jest.spyOn(add, 'addRH').mockReturnValue(addHandler);
       jest.spyOn(add, 'addCallbackRH').mockReturnValue(addCbHandler);
       jest.spyOn(remove, 'removeRH').mockReturnValue(removeHandler);
+      jest.spyOn(remove, 'removeCallbackRH').mockReturnValue(removeCbHandler);
       jest.spyOn(routes, 'setup').mockReturnValue(setupHandler);
       jest.spyOn(auth, 'setupCallback').mockReturnValue(setupCbHandler);
 
@@ -75,6 +77,7 @@ describe('routes', () => {
       expect(map['/add'][1]).toEqual(addHandler);
       expect(map['/add/callback'][2]).toEqual(addCbHandler);
       expect(map['/remove'][1]).toEqual(removeHandler);
+      expect(map['/remove/callback'][2]).toEqual(removeCbHandler);
       expect(map['/setup'][1]).toEqual(setupHandler);
       expect(map['/setup/callback'][2]).toEqual(setupCbHandler);
       expect(use).toEqual(routes.errorpage);

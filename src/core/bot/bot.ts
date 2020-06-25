@@ -49,6 +49,23 @@ export async function joinChannel(profile: BasicProfile): Promise<string> {
   });
 }
 
+/**
+ * @return {Promise<string>} - the channel the bot has left
+ */
+export async function leaveChannel(profile: BasicProfile): Promise<string> {
+  if (_client === null) {
+    throw new Error('Bot not running yet, try again later');
+  }
+
+  const channel = profile.login;
+
+  return _client.part(channel).then(() => {
+    _channels = _channels.filter((c) => c !== channel);
+    _this._storeChannelsOnDisk();
+    return channel;
+  });
+}
+
 export async function _createNewClient(
   options: StartServerOptions,
   authData: AuthData,
@@ -123,6 +140,7 @@ export function _setChannels(ch: string[]): void {
 export const _this = {
   startBot,
   joinChannel,
+  leaveChannel,
   _createNewClient,
   _handleConnectError,
   _handleAuthError,

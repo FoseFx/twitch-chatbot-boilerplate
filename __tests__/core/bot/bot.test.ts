@@ -158,4 +158,34 @@ describe('bot.ts', () => {
       });
     });
   });
+
+  describe('leaveChannel', () => {
+    it('should throw an error, when bot not running', () => {
+      bot._setClient(null);
+      return bot
+        .leaveChannel({ login: 'test' } as BasicProfile)
+        .catch((e) =>
+          expect(e).toEqual(new Error('Bot not running yet, try again later')),
+        );
+    });
+    it('should leave channel', () => {
+      expect.assertions(2);
+      bot._setChannels(['other', 'test', 'another']);
+      const fakeCl = ({
+        part: jest.fn().mockResolvedValue([]),
+      } as unknown) as Client;
+      const wfSSpy = jest
+        .spyOn(fs, 'writeFileSync')
+        .mockReset()
+        .mockReturnValue(undefined);
+      bot._setClient(fakeCl);
+      return bot.leaveChannel({ login: 'test' } as BasicProfile).then(() => {
+        expect(fakeCl.part).toHaveBeenCalledWith('test');
+        expect(wfSSpy).toHaveBeenCalledWith(
+          './.config/channels.json',
+          JSON.stringify(['other', 'another']),
+        );
+      });
+    });
+  });
 });

@@ -42,8 +42,9 @@ export async function setup(
   console.log(
     `===================================================\n` +
       `Please make sure\n` +
-      `   '${opts.host}/setup/callback' and \n` +
-      `   '${opts.host}/add/callback'\n` +
+      `   '${opts.host}/setup/callback', \n` +
+      `   '${opts.host}/add/callback' and \n` +
+      `   '${opts.host}/remove/callback'\n` +
       `are in the list of OAuth redirects of your Twitch-App!\n\n` +
       `To connect the bot with it's twitch account log in with it on twitch and visit\n\n` +
       `'${setupURL}'.\n\n` +

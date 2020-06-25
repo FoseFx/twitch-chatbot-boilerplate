@@ -11,12 +11,13 @@ import { StartServerOptions } from './server.types';
 import { getOAuthUrl, setupCallback } from './auth';
 import { hasValidToken, onlyWhenSetup, hasCodeQuery } from './util';
 import { addRH, addCallbackRH } from './add';
-import { removeRH } from './remove';
+import { removeRH, removeCallbackRH } from './remove';
 
 export function setUpRoutes(
   app: Express,
   startOptions: StartServerOptions,
 ): void {
+  // Add
   app.get('/', _this.home);
   app.get('/add', onlyWhenSetup, addRH(startOptions));
   app.get(
@@ -25,7 +26,17 @@ export function setUpRoutes(
     hasCodeQuery,
     addCallbackRH(startOptions),
   );
+
+  // Remove
   app.get('/remove', onlyWhenSetup, removeRH(startOptions));
+  app.get(
+    '/remove/callback',
+    onlyWhenSetup,
+    hasCodeQuery,
+    removeCallbackRH(startOptions),
+  );
+
+  // Setup
   app.get('/setup', hasValidToken('query'), _this.setup(startOptions));
   app.get(
     '/setup/callback',
@@ -33,8 +44,12 @@ export function setUpRoutes(
     hasCodeQuery,
     setupCallback(startOptions),
   );
+
+  // Static
   app.use(express.static('public'));
+  // 404
   app.get('*', _this.notfound);
+  // Error page
   app.use(_this.errorpage);
 }
 

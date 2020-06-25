@@ -23,7 +23,7 @@ describe('main.ts', () => {
       jest
         .spyOn(event, 'setClientReadyEmitter')
         .mockImplementation((ce) => (clientEmitter = ce));
-      jest.spyOn(bot, 'startBot').mockImplementation((_) => {
+      jest.spyOn(bot, 'startBot').mockImplementation(() => {
         clientEmitter.emit('clientReady', { test: 'test' });
         return Promise.resolve();
       });

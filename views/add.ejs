@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('partials/head.ejs') %> 
-    <%- include('partials/twitch_button.ejs') %>
+    <%- include('partials/head.ejs') %> <%-
+    include('partials/twitch_button.ejs') %>
     <title><%= botname %></title>
   </head>
   <body>
@@ -23,5 +23,9 @@
       />
       Continue with twitch
     </a>
+    <br />
+    <p class="italic">
+      Want to remove the bot from your chat? <a href="/remove">Go here!</a>
+    </p>
   </body>
 </html>
