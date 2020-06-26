@@ -45,6 +45,17 @@ Uses:
 9. Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
 10. Build and start the bot `npm run build` and `npm run start`
 11. Follow further instructions
+12. Build your chatbot
+13. Deploy it
+14. **Profit**
+
+### Next Steps
+
+- Customize the `/views`
+- Add static files to `/public`
+- Read the [tmi.js docs][tmijsdocs]
+- Read more about [commands and message limits][limits]
+- Get your bot [known and verified][verifydocs]
 
 ## Available Scripts
 
@@ -78,6 +89,9 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [createtwitchapp]: https://dev.twitch.tv/docs/authentication/#registration
 [dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com/
+[tmijsdocs]: https://github.com/tmijs/docs/tree/gh-pages/_posts/v1.4.2
+[limits]: https://dev.twitch.tv/docs/irc/guide#command--message-limits
+[verifydocs]: https://dev.twitch.tv/docs/irc/guide#known-and-verified-bots
 [i1]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/1.jpg?raw=true
 [i2]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/2.jpg?raw=true
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
