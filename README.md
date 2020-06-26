@@ -44,7 +44,11 @@ Uses:
 9. Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
 10. Build and start the bot `npm run build` and `npm run start`
 11. Follow further instructions
-12. Build your chatbot
+
+![screenshot][i5]
+
+12. Write your bot (`/main.ts`)
+
 13. Deploy it
 14. **Profit**
 
@@ -122,4 +126,5 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [i2]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/2.jpg?raw=true
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
 [i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
+[i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/5.jpg?raw=true
 [setuproutes]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/src/core/server/routes.ts#L16
