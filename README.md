@@ -2,8 +2,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7a50cf1e04aa3d0ad861/maintainability)](https://codeclimate.com/github/FoseFx/twitch-chatbot-boilerplate/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7a50cf1e04aa3d0ad861/test_coverage)](https://codeclimate.com/github/FoseFx/twitch-chatbot-boilerplate/test_coverage)
 
-# This is WIP and not ready to use yet!
-
 # twitch-chatbot-boilerplate
 
 > This project is not affiliated to Twitch Interactive Inc in any way.
