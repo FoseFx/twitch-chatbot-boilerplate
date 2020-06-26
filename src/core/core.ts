@@ -36,6 +36,15 @@ export function initialize(): Promise<{ client: Client; app: Express }> {
       .catch((error) => reject(error));
 
     clientEventEmitter.once('clientReady', (client: Client) => {
+      client.connect = () => {
+        throw new Error(
+          'The twitch-chatbot-boilerplate core gave you an already connected client, there is no need to call connect()',
+        );
+      };
+      client.disconnect = () => {
+        throw new Error('You should not call disconnect()');
+      };
+
       resolve({ client, app });
     });
   });
