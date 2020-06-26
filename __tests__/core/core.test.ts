@@ -30,7 +30,7 @@ describe('main.ts', () => {
 
       const { client } = await initialize();
 
-      expect(client).toEqual({ test: 'test' });
+      expect(((client as unknown) as { test: string }).test).toEqual('test');
 
       expect(lEVSpy).toHaveBeenCalled();
       expect(sSSpy).toHaveBeenCalled();
