@@ -1,7 +1,7 @@
 pull_request_rules:
   - name: automatic merge dependabot with CI pass
     conditions:
-    - status-success=build
+    - status-success=build (12.x)
     - author=dependabot-preview[bot]
     actions:
       merge:
