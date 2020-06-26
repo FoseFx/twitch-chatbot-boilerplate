@@ -21,13 +21,30 @@ Uses:
 
 ### How does it work?
 
-- Go to [dev.twitch.tv][devtwitchtv] and [create an App][createtwitchapp].
-- Create a new Twitch Account for your bot. (It is possible to create multiple twitch accounts with the same email address, when you enable it)
-- Clone or download this repository
-- Install dependencies `npm install`
-- Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
-- Build and start the bot `npm run build` and `npm run start`
-- Follow further instructions
+![screenshot][i1]
+
+1. Enable 2FA in your twitch account's security settings, you need this in order to access Twitch Developers
+2. You later need to create a new account for your bot, while you are here you can allow twitch to create multiple accounts with one email address
+
+![screenshot][i2]
+
+3. Go to [dev.twitch.tv][devtwitchtv] and [register an App][createtwitchapp].
+
+![screenshot][i3]
+
+4. Go through the wizard and make sure to include the `/setup/callback`, `/add/callback` and `/setup/callback` routes.
+
+5. Create a new Twitch Account for your bot. (You need 2FA on this one aswell if you like to get verified)
+
+6. Clone or download this repository
+7. Install dependencies `npm install`
+
+![screenshot][i4]
+
+8. Generate a new secret and copy both the secret and your Client-ID
+9. Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
+10. Build and start the bot `npm run build` and `npm run start`
+11. Follow further instructions
 
 ## Available Scripts
 
@@ -61,3 +78,7 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [createtwitchapp]: https://dev.twitch.tv/docs/authentication/#registration
 [dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com/
+[i1]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/1.jpg?raw=true
+[i2]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/2.jpg?raw=true
+[i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
+[i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
