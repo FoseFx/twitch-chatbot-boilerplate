@@ -17,7 +17,7 @@ Uses:
 - [.editorconfig][editorconfig]
 - [dotenv][dotenv]
 
-### How does it work?
+## How does it work?
 
 ![screenshot][i1]
 
@@ -47,13 +47,40 @@ Uses:
 13. Deploy it
 14. **Profit**
 
-### Next Steps
+## Next Steps
 
 - Customize the `/views`
 - Add static files to `/public`
 - Read the [tmi.js docs][tmijsdocs]
 - Read more about [commands and message limits][limits]
 - Get your bot [known and verified][verifydocs]
+
+## Caveats
+
+### New Routes
+
+Even though `initialize()` also returns the express instance, you can not simply add new routes (e.g. simply do a `app.get('/test', () => {...})`).
+Right now you need to edit the [setUpRoutes()][setuproutes] function.
+
+### Join and part chats
+
+Normaly streamers can add the bot by visiting `/add` and remove it on `/remove`.
+When the bot goes down and needs to be restarted, the list of channels is persisted in `.config/channels.json`.
+If you need to, for whatever reason, join or part channels programmatically,
+import the `joinChannel()` and `leaveChannel()` functions from `core/bot/bot.ts`.
+
+Example:
+
+```TypeScript
+import { BasicProfile } from '../server/server.types';
+import { joinChannel, leaveChannel } from './core/bot/bot.ts';
+
+...
+const profile = { login: "fosefx" } as BasicProfile;
+await joinChannel(profile);
+await leaveChannel(profile);
+...
+```
 
 ## Available Scripts
 
@@ -94,3 +121,4 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [i2]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/2.jpg?raw=true
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
 [i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
+[setuproutes]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/src/core/server/routes.ts#L16
