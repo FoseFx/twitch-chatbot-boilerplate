@@ -51,7 +51,7 @@ describe('routes', () => {
   });
 
   describe('setUpRoutes', () => {
-    it('should setup routes correctly', () => {
+    it('should call beforeRouteSetup() and setup routes correctly', () => {
       const addHandler = jest.fn();
       const addCbHandler = jest.fn();
       const removeHandler = jest.fn();
@@ -74,7 +74,12 @@ describe('routes', () => {
         use: (val) => (use = val),
       } as Express;
 
-      routes.setUpRoutes(fakeApp, {} as StartServerOptions);
+      const beforeRouteSetup = jest.fn();
+      const options = ({ beforeRouteSetup } as unknown) as StartServerOptions;
+
+      routes.setUpRoutes(fakeApp, options);
+
+      expect(beforeRouteSetup).toHaveBeenCalledWith(fakeApp);
 
       expect(map['/'][0]).toEqual(routes.home);
       expect(map['*'][0]).toEqual(routes.notfound);

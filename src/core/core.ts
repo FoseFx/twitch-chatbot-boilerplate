@@ -8,7 +8,13 @@ import { setup } from './setup';
 import { startBot } from './bot/bot';
 import { setClientReadyEmitter } from './event';
 
-export function initialize(): Promise<{ client: Client; app: Express }> {
+export interface InitializeOptions {
+  beforeRouteSetup?: (app: Express) => void;
+}
+
+export function initialize(
+  initializeOptions: InitializeOptions = {},
+): Promise<{ client: Client; app: Express }> {
   return new Promise((resolve, reject) => {
     loadEnvVariables(); // make sure all variables are available
 
@@ -19,6 +25,7 @@ export function initialize(): Promise<{ client: Client; app: Express }> {
       clientId: process.env.TWITCH_CLIENT_ID,
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
       setupScopes: ['chat:read', 'chat:edit'],
+      beforeRouteSetup: initializeOptions.beforeRouteSetup,
     };
 
     // after the bot is ready the "clientReady" event is fired on this one

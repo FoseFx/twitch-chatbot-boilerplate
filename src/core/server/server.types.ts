@@ -1,3 +1,5 @@
+import { Express } from 'express';
+
 export interface StartServerOptions {
   host: string;
   port: number;
@@ -5,6 +7,7 @@ export interface StartServerOptions {
   clientId: string;
   clientSecret: string;
   setupScopes: string[];
+  beforeRouteSetup?: (app: Express) => void;
 }
 
 export interface AuthData {

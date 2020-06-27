@@ -65,7 +65,19 @@ Uses:
 ### New Routes
 
 Even though `initialize()` also returns the express instance, you can not simply add new routes (e.g. simply do a `app.get('/test', () => {...})`).
-Right now you need to edit the [setUpRoutes()][setuproutes] function.
+Instead you need to use the `beforeRouteSetup` hook.
+
+Example:
+
+```TypeScript
+const options = {
+    beforeRouteSetup(app) {
+        app.get('/test', (req, res) => { ... })
+    }
+};
+
+const { client } = await initialize(options);
+```
 
 ### Join and part chats
 
