@@ -17,6 +17,10 @@ export function setUpRoutes(
   app: Express,
   startOptions: StartServerOptions,
 ): void {
+  if (startOptions.beforeRouteSetup) {
+    startOptions.beforeRouteSetup(app);
+  }
+
   // Add
   app.get('/', _this.home);
   app.get(

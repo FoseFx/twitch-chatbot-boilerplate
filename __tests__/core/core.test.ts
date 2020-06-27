@@ -9,13 +9,17 @@ import { initialize } from '../../src/core/core';
 import { AuthData } from '../../src/core/server/server.types';
 
 describe('main.ts', () => {
+  let lEVSpy;
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    lEVSpy = jest.spyOn(env, 'loadEnvVariables').mockImplementation(() => ({}));
+  });
+
   it('should test', () => expect(true).toEqual(true));
   describe('initialize()', () => {
     it('should initialize the process', async () => {
       let clientEmitter: EventEmitter;
-      const lEVSpy = jest
-        .spyOn(env, 'loadEnvVariables')
-        .mockImplementation(() => ({}));
       const sSSpy = jest
         .spyOn(server, 'startServer')
         .mockResolvedValue({} as Express);
@@ -43,6 +47,23 @@ describe('main.ts', () => {
       jest.spyOn(server, 'startServer').mockRejectedValue(err);
 
       return initialize().catch((e) => expect(e).toEqual(e));
+    });
+
+    it('should handle options', () => {
+      expect.assertions(1);
+
+      jest.spyOn(event, 'setClientReadyEmitter').mockReturnValue();
+
+      jest.spyOn(server, 'startServer').mockImplementation((opts) => {
+        expect(opts.beforeRouteSetup).toEqual(initOptions.beforeRouteSetup);
+        return Promise.reject();
+      });
+
+      const initOptions = {
+        beforeRouteSetup: jest.fn(),
+      };
+
+      return initialize(initOptions).catch(() => {});
     });
   });
 });
