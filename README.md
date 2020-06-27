@@ -89,13 +89,11 @@ import the `joinChannel()` and `leaveChannel()` functions from `core/bot/bot.ts`
 Example:
 
 ```TypeScript
-import { BasicProfile } from '../server/server.types';
 import { joinChannel, leaveChannel } from './core/bot/bot.ts';
 
 ...
-const profile = { login: "fosefx" } as BasicProfile;
-await joinChannel(profile);
-await leaveChannel(profile);
+await joinChannel("fosefx");
+await leaveChannel("fosefx");
 ...
 ```
 

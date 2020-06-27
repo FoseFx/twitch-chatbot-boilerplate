@@ -1,4 +1,4 @@
-import { StartServerOptions, AuthData } from './server.types';
+import { StartServerOptions, AuthData, BasicProfile } from './server.types';
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import { obtainAccessToken, getBasicProfileInfo } from './auth';
 import { joinChannel } from '../bot/bot';
@@ -20,7 +20,7 @@ export function addCallbackRH(options: StartServerOptions): RequestHandler {
       `${options.host}/setup/callback`,
     )
       .then((auth: AuthData) => getBasicProfileInfo(options, auth))
-      .then(joinChannel)
+      .then((profile: BasicProfile) => joinChannel(profile.login))
       .then((login) => res.render('add_success', { botname, login }))
       .catch((e) => next(e));
   };

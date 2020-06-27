@@ -4,7 +4,6 @@ import * as auth from '../../../src/core/server/auth';
 import {
   StartServerOptions,
   AuthData,
-  BasicProfile,
 } from '../../../src/core/server/server.types';
 import { Client } from 'tmi.js';
 import * as clientReadyEventEmitter from '../../../src/core/event';
@@ -145,7 +144,7 @@ describe('bot.ts', () => {
       } as unknown) as Client;
       jest.spyOn(fs, 'writeFileSync').mockReturnValue(undefined);
       bot._setClient(fakeCl);
-      return bot.joinChannel({ login: 'test' } as BasicProfile).then(() => {
+      return bot.joinChannel('test').then(() => {
         expect(fakeCl.join).toHaveBeenCalledWith('test');
       });
     });
@@ -163,7 +162,7 @@ describe('bot.ts', () => {
         .mockReset()
         .mockReturnValue(undefined);
       bot._setClient(fakeCl);
-      return bot.leaveChannel({ login: 'test' } as BasicProfile).then(() => {
+      return bot.leaveChannel('test').then(() => {
         expect(fakeCl.part).toHaveBeenCalledWith('test');
         expect(wfSSpy).toHaveBeenCalledWith(
           './.config/channels.json',

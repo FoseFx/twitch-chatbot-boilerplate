@@ -1,10 +1,6 @@
 import * as fs from 'fs';
 import { Client } from 'tmi.js';
-import {
-  AuthData,
-  StartServerOptions,
-  BasicProfile,
-} from '../server/server.types';
+import { AuthData, StartServerOptions } from '../server/server.types';
 import { refreshAccessToken } from '../server/auth';
 import { getClientReadyEmitter } from '../event';
 import { ensureDirExists } from '../util';
@@ -31,9 +27,7 @@ export async function startBot(
 /**
  * @return {Promise<string>} - the channel the bot has joined
  */
-export async function joinChannel(profile: BasicProfile): Promise<string> {
-  const channel = profile.login;
-
+export async function joinChannel(channel: string): Promise<string> {
   if (_channels.includes(channel)) {
     throw new Error('Bot already joined this chat');
   }
@@ -48,9 +42,7 @@ export async function joinChannel(profile: BasicProfile): Promise<string> {
 /**
  * @return {Promise<string>} - the channel the bot has left
  */
-export async function leaveChannel(profile: BasicProfile): Promise<string> {
-  const channel = profile.login;
-
+export async function leaveChannel(channel: string): Promise<string> {
   return _client.part(channel).then(() => {
     _channels = _channels.filter((c) => c !== channel);
     _this._storeChannelsOnDisk();
