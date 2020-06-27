@@ -1,0 +1,12 @@
+__tests__
+.config
+.github
+.jest
+build
+coverage
+node_modules
+.dockerignore
+.editorconfig
+Dockerfile
+README.md
+LICENSE
