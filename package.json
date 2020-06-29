@@ -15,7 +15,7 @@
     "eslint-config-prettier": "~6.11.0",
     "eslint-plugin-jest": "~23.17.1",
     "jest": "~26.1.0",
-    "nock": "^12.0.3",
+    "nock": "^13.0.0",
     "prettier": "~2.0.5",
     "rimraf": "~3.0.2",
     "ts-jest": "~26.1.0",
