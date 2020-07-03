@@ -18,6 +18,10 @@ Uses:
 - [.editorconfig][editorconfig]
 - [dotenv][dotenv]
 
+## Don't like x ?
+
+Feel free to use the [npm package version of this boilerplate][npm-version]. The package gives you access to the magic `initialize()` function.
+
 ## How does it work?
 
 ![screenshot][i1]
@@ -115,6 +119,7 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 
 `public/TwitchGlitchWhite.png`: Copyright (c) Twitch Interactive, Inc
 
+[npm-version]: https://github.com/FoseFx/twitch-chatbot-boilerplate/tree/npm/#twitch-chatbot-boilerplate-npm-package
 [typescript]: https://www.typescriptlang.org/
 [tmijs]: https://tmijs.com/
 [license-badge]: https://img.shields.io/badge/license-Unlicense-blue.svg
