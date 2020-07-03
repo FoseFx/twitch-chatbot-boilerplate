@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as express from 'express';
 import { Response as FetchResponse } from 'node-fetch';
 import {
@@ -101,4 +102,32 @@ export function extractFetchErrorMessage(json: {
     return json.status + '';
   }
   return JSON.stringify(json);
+}
+
+export function verifyFilesExist(): void {
+  const files = [
+    'views/add.ejs',
+    'views/add_success.ejs',
+    'views/error.ejs',
+    'views/ok.ejs',
+    'views/remove.ejs',
+    'views/remove_success.ejs',
+  ];
+
+  const missing = [];
+
+  for (const file of files) {
+    if (!fs.existsSync(file)) {
+      missing.push(file);
+    }
+  }
+
+  if (missing.length !== 0) {
+    throw new Error(
+      "Can't start server, the following files are missing: " +
+        JSON.stringify(missing) +
+        '\n' +
+        'In case you are using the npm package, read the setup guide!',
+    );
+  }
 }

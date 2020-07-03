@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Request, Response, NextFunction } from 'express';
 import { Response as FetchResponse } from 'node-fetch';
 import * as setup from '../../../src/core/setup';
@@ -8,6 +9,7 @@ import {
   hasCodeQuery,
   extractFetchErrorMessage,
   ensureFetchIsOk,
+  verifyFilesExist,
 } from '../../../src/core/server/util';
 
 describe('util', () => {
@@ -183,6 +185,32 @@ describe('util', () => {
           ),
         );
       });
+    });
+  });
+
+  describe('verifyFilesExist', () => {
+    let existsMock: jest.SpyInstance;
+
+    beforeEach(() => {
+      jest.resetAllMocks();
+      existsMock = jest.spyOn(fs, 'existsSync');
+    });
+
+    it('should throw Error with missing files', () => {
+      existsMock.mockImplementation((file) => {
+        return file === 'views/ok.ejs';
+      });
+
+      expect(verifyFilesExist).toThrowError(
+        new Error(
+          `Can't start server, the following files are missing: ["views/add.ejs","views/add_success.ejs","views/error.ejs","views/remove.ejs","views/remove_success.ejs"]\nIn case you are using the npm package, read the setup guide!`,
+        ),
+      );
+    });
+
+    it('should not throw when every file exists', () => {
+      existsMock.mockImplementation(() => true);
+      expect(verifyFilesExist).not.toThrow();
     });
   });
 });

@@ -3,7 +3,7 @@ import * as bodyparser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import { StartServerOptions } from './server.types';
 import { setUpRoutes } from './routes';
-import { newExpressApp } from './util';
+import { newExpressApp, verifyFilesExist } from './util';
 
 /**
  * In order to function a Twitch Chatbot needs an http server.
@@ -17,6 +17,7 @@ import { newExpressApp } from './util';
 export async function startServer(
   options: StartServerOptions,
 ): Promise<Express> {
+  verifyFilesExist();
   const app = newExpressApp();
   app.use(cookieParser());
   app.use(bodyparser.json());

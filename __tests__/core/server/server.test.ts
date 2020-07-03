@@ -5,6 +5,7 @@ import * as server from '../../../src/core/server/server';
 import { StartServerOptions } from '../../../src/core/server/server.types';
 
 describe('Server', () => {
+  let verifyFilesExistMock;
   let consoleMock;
   let routesMock;
   let expressMock;
@@ -26,10 +27,15 @@ describe('Server', () => {
       set: setMock,
       listen: listenMock,
     } as Express);
+
+    verifyFilesExistMock = jest
+      .spyOn(util, 'verifyFilesExist')
+      .mockImplementation(() => ({}));
   });
   describe('startServer()', () => {
     it('should start express server and attach routes and middleware', () => {
       server.startServer({ port: 6969 } as StartServerOptions);
+      expect(verifyFilesExistMock).toBeCalled();
       expect(expressMock).toBeCalled();
       expect(setMock).toBeCalled();
       expect(routesMock).toBeCalled();
