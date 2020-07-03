@@ -5,7 +5,7 @@ import { StartServerOptions } from './server/server.types';
 import { loadEnvVariables } from './env';
 import { startServer } from './server/server';
 import { setup } from './setup';
-import { startBot } from './bot/bot';
+import * as bot from './bot/bot';
 import { setClientReadyEmitter } from './event';
 
 export interface InitializeOptions {
@@ -39,7 +39,7 @@ export function initialize(
         app = expressApp;
         return setup(opts);
       })
-      .then((authData) => startBot(opts, authData))
+      .then((authData) => bot.startBot(opts, authData))
       .catch((error) => reject(error));
 
     clientEventEmitter.once('clientReady', (client: Client) => {
@@ -56,3 +56,7 @@ export function initialize(
     });
   });
 }
+
+export const joinChannel = bot.joinChannel;
+
+export const leaveChannel = bot.leaveChannel;
