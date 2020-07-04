@@ -109,4 +109,4 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
 [i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
 [i5]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/5.png?raw=true
-[caveats]: wiki/Caveats
+[caveats]: https://github.com/FoseFx/twitch-chatbot-boilerplate/wiki/Caveats
