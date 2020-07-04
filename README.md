@@ -66,41 +66,7 @@ It exports the `initialize()` function which takes care of setting up an http se
 - Get your bot [known and verified][verifydocs]
 
 ## Caveats
-
-### New Routes
-
-Even though `initialize()` also returns the express instance, you can not simply add new routes (e.g. simply do a `app.get('/test', () => {...})`).
-Instead you need to use the `beforeRouteSetup` hook.
-
-Example:
-
-```TypeScript
-const options = {
-    beforeRouteSetup(app) {
-        app.get('/test', (req, res) => { ... })
-    }
-};
-
-const { client } = await initialize(options);
-```
-
-### Join and part chats
-
-Normaly streamers can add the bot by visiting `/add` and remove it on `/remove`.
-When the bot goes down and needs to be restarted, the list of channels is persisted in `.config/channels.json`.
-If you need to, for whatever reason, join or part channels programmatically,
-import the `joinChannel()` and `leaveChannel()` functions from `core/bot/bot.ts`.
-
-Example:
-
-```TypeScript
-import { joinChannel, leaveChannel } from './core/bot/bot.ts';
-
-...
-await joinChannel("fosefx");
-await leaveChannel("fosefx");
-...
-```
+See [wiki][caveats]
 
 ## Available Scripts
 
@@ -143,3 +109,4 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
 [i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
 [i5]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/5.png?raw=true
+[caveats]: wiki/Caveats
