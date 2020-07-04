@@ -20,7 +20,8 @@ Uses:
 
 ## Don't like x ?
 
-Feel free to use the [npm package version of this boilerplate][npm-version]. The package gives you access to the magic `initialize()` function.
+If you don't like the choices made for you by the boilerplate you can just use the [core npm package][core] by itself.
+It exports the `initialize()` function which takes care of setting up an http server and the setup process. You call it and get a tmi.js client back which is already connected to twitch.
 
 ## How does it work?
 
@@ -119,7 +120,7 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 
 `public/TwitchGlitchWhite.png`: Copyright (c) Twitch Interactive, Inc
 
-[npm-version]: https://github.com/FoseFx/twitch-chatbot-boilerplate/tree/npm/#twitch-chatbot-boilerplate-npm-package
+[core]: https://github.com/FoseFx/twitch-chatbot-boilerplate-core
 [typescript]: https://www.typescriptlang.org/
 [tmijs]: https://tmijs.com/
 [license-badge]: https://img.shields.io/badge/license-Unlicense-blue.svg
@@ -142,4 +143,3 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
 [i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
 [i5]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/5.png?raw=true
-[setuproutes]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/src/core/server/routes.ts#L16

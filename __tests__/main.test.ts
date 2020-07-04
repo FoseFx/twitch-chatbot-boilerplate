@@ -1,4 +1,4 @@
-import * as core from '../src/core/core';
+import * as core from 'twitch-chatbot-boilerplate';
 import { Client, ChatUserstate } from 'tmi.js';
 import { main } from '../src/main';
 

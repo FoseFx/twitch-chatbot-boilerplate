@@ -1,4 +1,4 @@
-import { initialize } from './core/core';
+import { initialize } from 'twitch-chatbot-boilerplate';
 import { ChatUserstate } from 'tmi.js';
 
 /** Called using `npm run start` */
