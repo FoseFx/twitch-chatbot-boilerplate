@@ -22,7 +22,7 @@ export async function main(): Promise<void> {
    *
    * Build something great!
    */
-  const { client } = await initialize();
+  const { client, boilerplate } = await initialize();
 
   console.info('Client is ready!');
 
@@ -41,4 +41,12 @@ export async function main(): Promise<void> {
       }
     },
   );
+
+  // Say something when the bot is invited to a chatroom
+  boilerplate.on('join', ({ basicProfile }) => {
+    client.say(
+      basicProfile.login,
+      `HeyGuys Hey chat of @${basicProfile.login}`,
+    );
+  });
 }
