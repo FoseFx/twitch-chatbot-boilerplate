@@ -23,47 +23,21 @@ Uses:
 If you don't like the choices made for you by the boilerplate you can just use the [core npm package][core] by itself.
 It exports the [initialize()][initialize-api] function which takes care of setting up an http server and the setup process. You call it and get a tmi.js client back which is already connected to twitch.
 
-## How does it work?
+## Setup (short)
 
-![screenshot][i1]
+> The full setup guide with screenshots is available in the [wiki][setup-full]
 
-1. Enable 2FA in your twitch account's security settings, you need this in order to access Twitch Developers
-2. You later need to create a new account for your bot, while you are here you can allow twitch to create multiple accounts with one email address
+1. [Register a twitch app][createtwitchapp].
+2. Make sure to include the `/setup/callback`, `/add/callback` and `/setup/callback` routes.
+3. Clone or download this repository
+4. Install dependencies `npm install`
+5. Copy both the secret and your Client-ID into a `.env` file (`cp .env.example .env` first)
+6. Build and start the bot: `npm run build` and `npm run start`
+7. Follow further instructions
+8. Write your bot (`/main.ts`)
+9. **Profit**
 
-![screenshot][i2]
-
-3. Go to [dev.twitch.tv][devtwitchtv] and [register an App][createtwitchapp].
-
-![screenshot][i3]
-
-4. Go through the wizard and make sure to include the `/setup/callback`, `/add/callback` and `/setup/callback` routes.
-
-5. Create a new Twitch Account for your bot. (You need 2FA on this one aswell if you like to get verified)
-
-6. Clone or download this repository
-7. Install dependencies `npm install`
-
-![screenshot][i4]
-
-8. Generate a new secret and copy both the secret and your Client-ID
-9. Create a `.env` file (`cp .env.example .env`) and enter all necessary information, alternatively you can use any other way of setting an environment variable
-10. Build and start the bot `npm run build` and `npm run start`
-11. Follow further instructions
-
-![screenshot][i5]
-
-12. Write your bot (`/main.ts`)
-
-13. Deploy it
-14. **Profit**
-
-## Next Steps
-
-- Customize the `/views`
-- Add static files to `/public`
-- Read the [tmi.js docs][tmijsdocs]
-- Read more about [commands and message limits][limits]
-- Get your bot [known and verified][verifydocs]
+[Next Steps][next-steps]
 
 ## Caveats
 See [wiki][caveats]
@@ -106,9 +80,6 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 [tmijsdocs]: https://github.com/tmijs/docs/tree/gh-pages/_posts/v1.4.2
 [limits]: https://dev.twitch.tv/docs/irc/guide#command--message-limits
 [verifydocs]: https://dev.twitch.tv/docs/irc/guide#known-and-verified-bots
-[i1]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/1.jpg?raw=true
-[i2]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/2.jpg?raw=true
-[i3]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/3.jpg?raw=true
-[i4]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/4.jpg?raw=true
-[i5]: https://github.com/FoseFx/twitch-chatbot-boilerplate/blob/master/.github/images/5.png?raw=true
 [caveats]: https://github.com/FoseFx/twitch-chatbot-boilerplate/wiki/Caveats
+[setup-full]: https://github.com/FoseFx/twitch-chatbot-boilerplate/wiki/Setup#setup-full
+[next-steps]: https://github.com/FoseFx/twitch-chatbot-boilerplate/wiki/Setup#next-steps
