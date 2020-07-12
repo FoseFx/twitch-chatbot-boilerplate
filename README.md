@@ -3,7 +3,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7a50cf1e04aa3d0ad861/maintainability)](https://codeclimate.com/github/FoseFx/twitch-chatbot-boilerplate/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7a50cf1e04aa3d0ad861/test_coverage)](https://codeclimate.com/github/FoseFx/twitch-chatbot-boilerplate/test_coverage)
 
-# twitch-chatbot-boilerplate
+# twitch-chatbot-boilerplate ([Wiki][wiki])
 
 > This project is not affiliated to Twitch Interactive Inc in any way.
 
@@ -21,7 +21,7 @@ Uses:
 ## Don't like x ?
 
 If you don't like the choices made for you by the boilerplate you can just use the [core npm package][core] by itself.
-It exports the `initialize()` function which takes care of setting up an http server and the setup process. You call it and get a tmi.js client back which is already connected to twitch.
+It exports the [initialize()][initialize-api] function which takes care of setting up an http server and the setup process. You call it and get a tmi.js client back which is already connected to twitch.
 
 ## How does it work?
 
@@ -86,6 +86,8 @@ The following files in `public/fonts` are licensed under the [SIL Open Font Lice
 
 `public/TwitchGlitchWhite.png`: Copyright (c) Twitch Interactive, Inc
 
+[wiki]: https://github.com/FoseFx/twitch-chatbot-boilerplate/wiki
+[initialize-api]: https://fosefx.github.io/twitch-chatbot-boilerplate-core/docs/modules/_core_.html#initialize
 [core]: https://github.com/FoseFx/twitch-chatbot-boilerplate-core
 [typescript]: https://www.typescriptlang.org/
 [tmijs]: https://tmijs.com/
