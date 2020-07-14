@@ -4,7 +4,7 @@
   "description": "Boilerplate for twitch chatbot projects",
   "devDependencies": {
     "@types/jest": "~26.0.4",
-    "@types/node": "~14.0.22",
+    "@types/node": "~14.0.23",
     "@types/tmi.js": "^1.4.0",
     "@typescript-eslint/eslint-plugin": "~3.6.0",
     "@typescript-eslint/parser": "~3.6.0",
