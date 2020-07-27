@@ -10,7 +10,7 @@
     "@typescript-eslint/parser": "~3.7.0",
     "eslint": "~7.5.0",
     "eslint-config-prettier": "~6.11.0",
-    "eslint-plugin-jest": "~23.18.0",
+    "eslint-plugin-jest": "~23.18.2",
     "jest": "~26.1.0",
     "nock": "^13.0.2",
     "prettier": "~2.0.5",
