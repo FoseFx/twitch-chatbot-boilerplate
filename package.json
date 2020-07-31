@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Boilerplate for twitch chatbot projects",
   "devDependencies": {
-    "@types/jest": "~26.0.7",
+    "@types/jest": "~26.0.8",
     "@types/node": "~14.0.27",
     "@types/tmi.js": "^1.4.0",
     "@typescript-eslint/eslint-plugin": "~3.7.1",
