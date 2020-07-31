@@ -7,6 +7,8 @@
 
 > This project is not affiliated to Twitch Interactive Inc in any way.
 
+![Header](.github/images/header.png?raw=true)
+
 Uses:
 
 - [TypeScript][typescript]
